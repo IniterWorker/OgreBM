@@ -33,6 +33,9 @@ void GameState::enter() {
 }
 
 void GameState::createScene() {
+    // SkyBox
+    _sceneManager->setSkyBox(true, "Examples/SpaceSkyBox", 300);
+
     // Light
     _light = _sceneManager->createLight("MainLight");
     _light->setDiffuseColour(Ogre::ColourValue(1.0, 1.0, 1.0));
