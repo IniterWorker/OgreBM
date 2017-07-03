@@ -9,17 +9,27 @@
 
 #include "Game/Game.hpp"
 
-Game::Game(Ogre::SceneManager *sceneManager) : _sceneManager(sceneManager) {
+Game::Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager) :
+        _renderWindow(renderWindow),
+        _sceneManager(sceneManager) {
     _map = new Map(sceneManager, 10, 10);
 }
 
 Game::~Game() {
     delete _map;
     _map = nullptr;
+    delete _controller;
+    _controller = nullptr;
 }
 
 void Game::update(Ogre::Real elapsedTime) {
 
+    // Inject elapsedTime in all players
+    for (auto it = _vPlayers.begin(); it != _vPlayers.end(); ++it) {
+        (*it)->update(elapsedTime);
+    }
+
+    // Inject elapsedTime in all bombs
 }
 
 Map *Game::getMap() {

@@ -25,7 +25,7 @@ void GameState::enter() {
     _sceneManager->addRenderQueueListener(OgreFramework::getSingletonPtr()->_overlaySystem);
 
     // Init Game Data
-    _game = new Game(_sceneManager);
+    _game = new Game(nullptr, _sceneManager);
 
     // TrayManager
     OgreFramework::getSingletonPtr()->_trayManager->destroyAllWidgets();

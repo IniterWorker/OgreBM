@@ -25,6 +25,7 @@ public:
 
 private:
     AppStateManager *_appStateManager;
+    OgreFramework *_ogreFramework;
 };
 
 

@@ -14,14 +14,17 @@
 #include <vector>
 #include <Entities/Player.hpp>
 #include "Map.hpp"
+#include "Controller.hpp"
 
 class Game {
 protected:
     Ogre::SceneManager *_sceneManager;
+    Ogre::RenderWindow *_renderWindow;
+    Controller *_controller;
     std::vector<Player *> _vPlayers;
     Map *_map;
 public:
-    Game(Ogre::SceneManager *sceneManager);
+    Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager);
 
     virtual ~Game();
 

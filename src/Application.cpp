@@ -27,7 +27,7 @@ Application::~Application(void) {
 }
 
 void Application::start() {
-    new OgreFramework();
+    _ogreFramework = new OgreFramework();
     if (!OgreFramework::getSingletonPtr()->initOgre("Runaway", 0, 0))
         return;
 

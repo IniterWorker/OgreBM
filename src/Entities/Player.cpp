@@ -45,3 +45,7 @@ void Player::hitBomb() {
 void Player::newBomb() {
 
 }
+
+void Player::update(Ogre::Real elapsedTime) {
+
+}

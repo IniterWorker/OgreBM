@@ -12,6 +12,8 @@
 #ifndef INDIESTUDIO_OGREFRAMEWORK_HPP
 #define INDIESTUDIO_OGREFRAMEWORK_HPP
 
+#include <Game/InputManager.hpp>
+
 #include <OgreCamera.h>
 #include <OgreEntity.h>
 #include <OgreLogManager.h>
@@ -46,7 +48,7 @@ public:
     Ogre::Timer *_timer;
     Ogre::OverlaySystem *_overlaySystem;
 
-    OIS::InputManager *_inputManager;
+    InputManager *_inputManager;
     OIS::Keyboard *_keyboard;
     OIS::Mouse *_mouse;
     OgreBites::InputContext _inputContext;

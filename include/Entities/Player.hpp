@@ -27,6 +27,8 @@ public:
 
     virtual ~Player();
 
+    virtual void update(Ogre::Real elapsedTime);
+
     virtual void moveUp();
 
     virtual void moveDown();

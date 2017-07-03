@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 //
 
+#include <Game/InputManager.hpp>
 #include "OgreFramework.hpp"
 
 template<> OgreFramework *Ogre::Singleton<OgreFramework>::msSingleton = 0;
@@ -27,7 +28,7 @@ OgreFramework::OgreFramework() {
 OgreFramework::~OgreFramework() {
     OgreFramework::getSingletonPtr()->_log->logMessage("Shutdown OGRE...");
     if (_inputManager)
-        OIS::InputManager::destroyInputSystem(_inputManager);
+        delete(_inputManager);
     if (_root)
         delete _root;
 }
@@ -91,37 +92,47 @@ OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener,
 
     _overlaySystem = new Ogre::OverlaySystem();
 
-    size_t hWnd = 0;
-    OIS::ParamList paramList;
-    _window->getCustomAttribute("WINDOW", &hWnd);
+//    size_t hWnd = 0;
+//    OIS::ParamList paramList;
+//    _window->getCustomAttribute("WINDOW", &hWnd);
+//
+//    paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd)));
+//
+//    Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
+//    _inputManager = OIS::InputManager::createInputSystem(paramList);
+//
+//    _keyboard = static_cast<OIS::Keyboard *>(_inputManager
+//            ->createInputObject(OIS::OISKeyboard, true));
+//    _mouse = static_cast<OIS::Mouse *>(_inputManager
+//            ->createInputObject(OIS::OISMouse, true));
+//
+//    _mouse->getMouseState().height = _window->getHeight();
+//    _mouse->getMouseState().width = _window->getWidth();
+//
+//    if (pKeyListener == 0)
+//        _keyboard->setEventCallback(this);
+//    else
+//        _keyboard->setEventCallback(pKeyListener);
+//
+//    if (pMouseListener == 0)
+//        _mouse->setEventCallback(this);
+//    else
+//        _mouse->setEventCallback(pMouseListener);
 
-    paramList.insert(OIS::ParamList::value_type("WINDOW", Ogre::StringConverter::toString(hWnd)));
+    _inputManager = new InputManager();
+    InputManager::getSingletonPtr()->initialise(_window);
 
-    Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
-    _inputManager = OIS::InputManager::createInputSystem(paramList);
-
-    _keyboard = static_cast<OIS::Keyboard *>(_inputManager
-            ->createInputObject(OIS::OISKeyboard, true));
-    _mouse = static_cast<OIS::Mouse *>(_inputManager
-            ->createInputObject(OIS::OISMouse, true));
-
-    _mouse->getMouseState().height = _window->getHeight();
-    _mouse->getMouseState().width = _window->getWidth();
-
-    if (pKeyListener == 0)
-        _keyboard->setEventCallback(this);
-    else
-        _keyboard->setEventCallback(pKeyListener);
-
-    if (pMouseListener == 0)
-        _mouse->setEventCallback(this);
-    else
-        _mouse->setEventCallback(pMouseListener);
+    InputManager::getSingletonPtr()->addKeyListener(this, "OgreFramework");
+    InputManager::getSingletonPtr()->addMouseListener(this, "OgreFramework");
 
     _initResourcesConfiguration();
 
+    _keyboard = InputManager::getSingletonPtr()->getKeyboard();
+    _mouse = InputManager::getSingletonPtr()->getMouse();
+
     _inputContext.mMouse = _mouse;
     _inputContext.mKeyboard = _keyboard;
+
     _trayManager = new OgreBites::SdkTrayManager("AOFTrayMgr", _window, _inputContext, 0);
 
     _timer = new Ogre::Timer();
