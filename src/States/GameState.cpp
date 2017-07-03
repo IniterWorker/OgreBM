@@ -24,21 +24,25 @@ void GameState::enter() {
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     _sceneManager->addRenderQueueListener(OgreFramework::getSingletonPtr()->_overlaySystem);
 
+    // Init Game Data
+    _game = new Game(_sceneManager);
+
     // TrayManager
     OgreFramework::getSingletonPtr()->_trayManager->destroyAllWidgets();
     OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
     OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "GameState", 250);
+
 
     // Scene
     createScene();
 }
 
 void GameState::createScene() {
+    // Map
+    Map *map = _game->getMap();
+
     // SkyBox
     _sceneManager->setSkyBox(true, "Examples/SpaceSkyBox", 300);
-
-    // Map
-    _map = new Map(_sceneManager, 15, 15);
 
     // Light
     _light = _sceneManager->createLight("MainLight");
@@ -49,10 +53,10 @@ void GameState::createScene() {
     _camera->setAspectRatio(
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualWidth()) /
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualHeight()));
-    _camera->setPosition(_map->getMapDim().x * 1.5f, _map->getMapDim().y * 10, _map->getMapDim().z / 2);
+    _camera->setPosition(map->getMapDim().x * 1.5f, map->getMapDim().y * 10, map->getMapDim().z / 2);
     _camera->setNearClipDistance(2);
-    _camera->lookAt(_map->getMapDim() / 2);
-    Ogre::Vector3 vec = _map->getMapDim();
+    _camera->lookAt(map->getMapDim() / 2);
+    Ogre::Vector3 vec = map->getMapDim();
     vec /= 2;
     vec.y += 100;
     _light->setPosition(vec);
@@ -98,6 +102,8 @@ void GameState::buttonHit(OgreBites::Button *button) {
 void GameState::update(Ogre::Real timeSinceLastFrame) {
     _FrameEvent.timeSinceLastFrame = timeSinceLastFrame;
     OgreFramework::getSingletonPtr()->_trayManager->frameRenderingQueued(_FrameEvent);
+
+    _game->update(timeSinceLastFrame);
 
     if (_isQuit) {
         shutdown();

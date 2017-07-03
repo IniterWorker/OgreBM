@@ -1,4 +1,4 @@
-# include "Map.hpp"
+# include "Game/Map.hpp"
 
 const std::map<Map::Bloc, std::string>      Map::p_blocMesh = {
   {Map::Bloc::WALL, "stone.mesh"},

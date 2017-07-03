@@ -12,8 +12,9 @@
 
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreSceneNode.h>
+#include <Game/Game.hpp>
 #include "AppState.hpp"
-# include "Map.hpp"
+# include "Game/Map.hpp"
 
 class GameState : public AppState {
 public:
@@ -46,7 +47,7 @@ private:
     Ogre::SceneManager *_sceneManager;
     Ogre::Light *_light;
     Ogre::Camera *_camera;
-  Map   *_map;
+    Game *_game;
 };
 
 

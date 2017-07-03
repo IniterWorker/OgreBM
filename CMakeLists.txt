@@ -192,11 +192,11 @@ set(CLIENT_SRCS
         src/States/AppState.cpp
         src/Application.cpp
         include/Application.hpp
-        include/Map.hpp
-        src/Map.cpp
+        include/Game/Map.hpp
+        src/Game/Map.cpp
         src/Main.cpp
         src/OgreFramework.cpp
-        include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp src/States/SplashState.cpp include/States/SplashState.hpp)
+        include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp src/States/SplashState.cpp include/States/SplashState.hpp src/Entities/Player.cpp include/Entities/Player.hpp src/Game/Game.cpp include/Game/Game.hpp)
 
 include_directories(
         include
