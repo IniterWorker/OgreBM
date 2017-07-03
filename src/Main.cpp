@@ -9,6 +9,9 @@
 //-----------------------------------------------------------------------------
 //
 
+# include <ctime>
+# include <cstdlib>
+
 #include <Application.hpp>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -28,6 +31,7 @@ int main(int argc, char *argv[])
 {
   Application app;
 
+  srand(time(NULL));
   try
   {
     app.start();
@@ -39,7 +43,7 @@ int main(int argc, char *argv[])
     MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
     std::cerr << "An exception has occured: " <<
-	      e.getFullDescription().c_str() << std::endl;
+              e.getFullDescription().c_str() << std::endl;
 #endif
   }
   return 0;

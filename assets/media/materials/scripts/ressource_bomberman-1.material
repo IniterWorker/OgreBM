@@ -1,0 +1,22 @@
+// C__Documents_and_Settings_ClintK_Desktop_Desktop_Models_Resourc genrated by blender2ogre 0.6.0
+
+material C__Documents_and_Settings_ClintK_Desktop_Desktop_Models_Resourc 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass C__Documents_and_Settings_ClintK_Desktop_Desktop_Models_Resourc
+        {
+            ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
+	    
+            texture_unit 
+            {
+                texture bomberman00.png
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}

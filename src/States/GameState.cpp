@@ -10,7 +10,8 @@
 #include "OgreFramework.hpp"
 #include "States/GameState.hpp"
 
-GameState::GameState() {
+GameState::GameState()
+{
 
 }
 
@@ -33,23 +34,19 @@ void GameState::enter() {
 }
 
 void GameState::createScene() {
+  _map = new Map(_sceneManager);
     // Light
     _light = _sceneManager->createLight("MainLight");
     _light->setDiffuseColour(Ogre::ColourValue(1.0, 1.0, 1.0));
     _light->setPosition(0, 200, 0);
-
-    // Create an entity
-    _ogreHead = _sceneManager->createEntity("ogrehead.mesh");
-    _ogreNode = _sceneManager->getRootSceneNode()->createChildSceneNode("OgreNode");
-    _ogreNode->attachObject(_ogreHead);
-    _ogreNode->setPosition(0, 0, 0);
 
     // Init Camera
     _camera = _sceneManager->createCamera("MainCamera");
     _camera->setAspectRatio(
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualWidth()) /
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualHeight()));
-    _camera->setPosition(0, 0, 300);
+    _camera->setPosition(500, 500, 500);
+    _camera->lookAt(0, 0, 0);
 
     OgreFramework::getSingletonPtr()->_viewport->setCamera(_camera);
 }

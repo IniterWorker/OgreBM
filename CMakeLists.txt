@@ -192,6 +192,8 @@ set(CLIENT_SRCS
         src/States/AppState.cpp
         src/Application.cpp
         include/Application.hpp
+        include/Map.hpp
+        src/Map.cpp
         src/Main.cpp
         src/OgreFramework.cpp
         include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp src/States/SplashState.cpp include/States/SplashState.hpp)
