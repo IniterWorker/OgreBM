@@ -75,7 +75,6 @@ compile_commands.json
 CTestTestfile.cmake
 luac.out
 *.src.rock
-*.zip
 *.tar.gz
 *.o
 *.os
