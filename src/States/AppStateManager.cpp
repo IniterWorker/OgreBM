@@ -145,8 +145,8 @@ bool AppStateManager::frameRenderingQueued(const Ogre::FrameEvent &evt) {
     if (_isShutdown)
         return false;
 
-    if (evt.timeSinceLastEvent - 15.f < 0)
-        usleep((int) (15.f - evt.timeSinceLastEvent) * 1000);
+    // if (evt.timeSinceLastEvent - 15.f < 0)
+    //    usleep((int) (15.f - evt.timeSinceLastEvent) * 1000);
 
     if (_activeStateStack.size())
         _activeStateStack.back()->update(evt.timeSinceLastFrame);
