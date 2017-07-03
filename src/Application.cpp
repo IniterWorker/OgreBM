@@ -10,6 +10,7 @@
 //
 
 
+#include <States/SplashState.hpp>
 #include "States/GameState.hpp"
 #include "States/MenuState.hpp"
 #include "States/AppStateManager.hpp"
@@ -36,7 +37,8 @@ void Application::start() {
     OgreFramework::getSingletonPtr()->_log->logMessage("Application Load State!");
     MenuState::create(_appStateManager, "MenuState");
     GameState::create(_appStateManager, "GameState");
+    SplashState::create(_appStateManager, "SplashState");
 
     OgreFramework::getSingletonPtr()->_log->logMessage("State initialized!");
-    _appStateManager->start(_appStateManager->findByName("MenuState"));
+    _appStateManager->start(_appStateManager->findByName("SplashState"));
 }

@@ -41,7 +41,11 @@ public:
 
 private:
     bool _isQuit;
+    bool _firstLoad;
     Ogre::SceneManager *_sceneManager;
+    Ogre::Camera *_camera;
+    Ogre::Real _time;
+    Ogre::Real _awaitingTime;
 };
 
 
