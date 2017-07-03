@@ -38,7 +38,7 @@ public:
 
 private:
 
-  void  p_destroyCase(const Ogre::Vector2&);
+  void  p_destroyCase(const Ogre::Vector2&, bool = false);
   void  p_createCase(const Ogre::Vector2&, Bloc);
   void  p_clearMap(void);
 
