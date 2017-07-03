@@ -46,6 +46,7 @@ private:
     Ogre::Camera *_camera;
     Ogre::Real _time;
     Ogre::Real _awaitingTime;
+    Ogre::TextureUnitState *tex;
 };
 
 

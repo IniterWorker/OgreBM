@@ -1,0 +1,26 @@
+material OgreBM/SplashBase
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_check off
+        }
+    }
+}
+
+material OgreBM/Logo : OgreBM/SplashBase
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture splash_screen_white.png
+            }
+        }
+    }
+}

@@ -39,9 +39,13 @@ void SplashState::createScene() {
     _camera->setAspectRatio(
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualWidth()) /
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualHeight()));
-    _camera->setPosition(0, 0, 300);
+    _camera->setPosition(0, 0, 800);
 
     OgreFramework::getSingletonPtr()->_viewport->setCamera(_camera);
+
+    OgreBites::DecorWidget *_logo = OgreFramework::getSingletonPtr()->_trayManager->createDecorWidget(OgreBites::TL_NONE, "Splash/Logo", "OgreBM/Logo");
+    OgreFramework::getSingletonPtr()->_trayManager->moveWidgetToTray(_logo, OgreBites::TL_CENTER, 0);
+    OgreFramework::getSingletonPtr()->_trayManager->getBackdropLayer()->hide();
 }
 
 void SplashState::exit() {

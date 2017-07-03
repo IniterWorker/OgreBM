@@ -1,0 +1,8 @@
+template container Panel(OgreBM/Logo)
+{
+	metrics_mode pixels
+	material OgreBM/Logo
+	horz_align center
+	width 800
+	height 600
+}
