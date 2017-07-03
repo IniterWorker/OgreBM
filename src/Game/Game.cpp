@@ -32,15 +32,22 @@ void Game::update(Ogre::Real elapsedTime) {
             switch (action) {
             case InputController::ActionPlayer::GO_UP:
               move.x -= _map->getBlocDim().x;
+              (*it)->getNodeRoot()->resetOrientation();
+              (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI / 2));
               break;
             case InputController::ActionPlayer::GO_DOWN:
               move.x += _map->getBlocDim().x;
+              (*it)->getNodeRoot()->resetOrientation();
+              (*it)->getNodeRoot()->yaw(Ogre::Radian(M_PI / 2));
               break;
             case InputController::ActionPlayer::GO_RIGHT:
               move.z += _map->getBlocDim().z;
+              (*it)->getNodeRoot()->resetOrientation();
               break;
             case InputController::ActionPlayer::GO_LEFT:
               move.z -= _map->getBlocDim().z;
+              (*it)->getNodeRoot()->resetOrientation();
+              (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI));
               break;
             default:
               break;
