@@ -3,6 +3,7 @@
 
 # include <vector>
 # include <OgreVector2.h>
+# include <OgreVector3.h>
 # include <OgreSceneNode.h>
 # include <OgreSceneManager.h>
 # include <OgreEntity.h>
@@ -25,11 +26,13 @@ public:
 
   typedef std::vector<std::vector<Bloc>>        Grid;
 
-  Map(Ogre::SceneManager *mgr, size_t width = 100, size_t height = 100, float density = 1.0f);
+  Map(Ogre::SceneManager *mgr, size_t width = 101, size_t height = 101, float density = 0.5f);
   ~Map(void);
 
   void  makeExplosion(const Ogre::Vector2&, int power);
   void  generateMap(size_t width, size_t height, float density);
+
+  const Ogre::Vector3&  getMapDim(void) const;
 
   const Grid&   accessGrid(void) const;
 
@@ -42,10 +45,13 @@ private:
   Grid  p_grid;
 
   std::vector<std::vector<Ogre::SceneNode*>>  p_drawMap;
+  std::vector<std::vector<Ogre::SceneNode*>>  p_subPlane;
 
   Ogre::SceneNode*    p_base;
 
   Ogre::SceneManager    *p_mgr;
+
+  Ogre::Vector3 p_dim;
 
   static const std::map<Bloc, std::string>      p_blocMesh;
 

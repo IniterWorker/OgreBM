@@ -8,8 +8,14 @@ const std::map<Map::Bloc, std::string>      Map::p_blocMesh = {
 Map::Map(Ogre::SceneManager *mgr, size_t width, size_t height, float density)
 {
   p_mgr = mgr;
+
+  Ogre::Entity *wall = p_mgr->createEntity("beginSample", p_blocMesh.at(Map::Bloc::WALL));
   p_base = p_mgr->getRootSceneNode()->createChildSceneNode();
   generateMap(width, height, density);
+  p_dim.x = width * wall->getBoundingBox().getSize().x;
+  p_dim.z = height * wall->getBoundingBox().getSize().z;
+  p_dim.y = wall->getBoundingBox().getSize().y;
+  p_mgr->destroyEntity("beginSample");
 }
 
 Map::~Map(void)
@@ -27,6 +33,7 @@ void    Map::p_clearMap(void)
     }
   p_grid.clear();
   p_drawMap.clear();
+  p_subPlane.clear();
 }
 
 const Map::Grid&     Map::accessGrid(void) const
@@ -42,8 +49,10 @@ void    Map::p_destroyCase(const Ogre::Vector2& pos)
   os << "Bloc" << pos;
 
   try {
-    p_mgr->destroyEntity(p_mgr->getEntity(os.str()));
     p_drawMap[pos.y][pos.x]->detachObject(os.str());
+    p_mgr->destroyEntity(p_mgr->getEntity(os.str()));
+    p_subPlane[pos.y][pos.x]->detachObject(os.str());
+    p_mgr->destroyEntity(p_mgr->getEntity("Sub" + os.str()));
   } catch (std::exception) {}
 }
 
@@ -56,6 +65,7 @@ void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType)
   os << "Bloc" << pos;
 
   p_drawMap[pos.y][pos.x]->attachObject(p_mgr->createEntity(os.str(), p_blocMesh.at(blocType)));
+  p_subPlane[pos.y][pos.x]->attachObject(p_mgr->createEntity("Sub" + os.str(), p_blocMesh.at(Map::Bloc::WALL)));
   p_grid[pos.y][pos.x] = blocType;
 }
 
@@ -65,6 +75,11 @@ void    Map::makeExplosion(const Ogre::Vector2& pos, int power)
   (void)power;
 }
 
+const Ogre::Vector3&  Map::getMapDim(void) const
+{
+  return (p_dim);
+}
+
 void    Map::generateMap(size_t width, size_t height, float density)
 {
   Ogre::Entity *wall = p_mgr->createEntity("sample", p_blocMesh.at(Map::Bloc::WALL));
@@ -72,13 +87,18 @@ void    Map::generateMap(size_t width, size_t height, float density)
   p_clearMap();
   p_grid.resize(height);
   p_drawMap.resize(height);
+  p_subPlane.resize(height);
   for (size_t i = 0 ; i < height ; ++i) {
     p_grid[i].resize(width);
     p_drawMap[i].resize(width);
+    p_subPlane[i].resize(width);
     for (size_t j = 0 ; j < width ; ++j) {
       p_grid[i][j] = Map::Bloc::EMPTY;
       p_drawMap[i][j] = p_base->createChildSceneNode();
       p_drawMap[i][j]->setPosition(j * wall->getBoundingBox().getSize().x, 0, i * wall->getBoundingBox().getSize().z);
+      p_subPlane[i][j] = p_base->createChildSceneNode();
+      p_subPlane[i][j]->setPosition(j * wall->getBoundingBox().getSize().x, -wall->getBoundingBox().getSize().y,
+                                    i * wall->getBoundingBox().getSize().z);
       if (!i || !j || i == height - 1 || j == width - 1 ||
           (i % 2 == 0 && j % 2 == 0)) {
         p_grid[i][j] = Map::Bloc::WALL;
