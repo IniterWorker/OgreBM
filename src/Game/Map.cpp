@@ -29,7 +29,7 @@ void    Map::p_clearMap(void)
   p_base->removeAndDestroyAllChildren();
   for (auto i = 0 ; i != p_drawMap.size() ; ++i)
     for (auto j = 0 ; j != p_drawMap[0].size() ; ++j) {
-      p_destroyCase(Ogre::Vector2(j, i));
+      p_destroyCase(Ogre::Vector2(j, i), true);
     }
   p_grid.clear();
   p_drawMap.clear();
@@ -41,7 +41,7 @@ const Map::Grid&     Map::accessGrid(void) const
   return (p_grid);
 }
 
-void    Map::p_destroyCase(const Ogre::Vector2& pos)
+void    Map::p_destroyCase(const Ogre::Vector2& pos, bool end)
 {
   p_grid[pos.y][pos.x] = Map::Bloc::EMPTY;
   std::ostringstream    os;
@@ -51,8 +51,10 @@ void    Map::p_destroyCase(const Ogre::Vector2& pos)
   try {
     p_drawMap[pos.y][pos.x]->detachObject(os.str());
     p_mgr->destroyEntity(p_mgr->getEntity(os.str()));
-    p_subPlane[pos.y][pos.x]->detachObject(os.str());
-    p_mgr->destroyEntity(p_mgr->getEntity("Sub" + os.str()));
+    if (end) {
+      p_subPlane[pos.y][pos.x]->detachObject(os.str());
+      p_mgr->destroyEntity(p_mgr->getEntity("Sub" + os.str()));
+    }
   } catch (std::exception) {}
 }
 
@@ -70,8 +72,35 @@ void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType)
 
 void    Map::makeExplosion(const Ogre::Vector2& pos, int power)
 {
-  (void)pos;
-  (void)power;
+
+  for (int i = 1 ; i <= power ; ++i)
+    if (p_grid[pos.y + i][pos.x] == Map::Bloc::WALL)
+      break;
+    else if (p_grid[pos.y + i][pos.x] == Map::Bloc::BREAKABLE) {
+      p_destroyCase(Ogre::Vector2(pos.x, pos.y + i));
+      break;
+    }
+  for (int i = 1 ; i <= power ; ++i)
+    if (p_grid[pos.y - i][pos.x] == Map::Bloc::WALL)
+      break;
+    else if (p_grid[pos.y - i][pos.x] == Map::Bloc::BREAKABLE) {
+      p_destroyCase(Ogre::Vector2(pos.x, pos.y - i));
+      break;
+    }
+  for (int i = 1 ; i <= power ; ++i)
+    if (p_grid[pos.y][pos.x + i] == Map::Bloc::WALL)
+      break;
+    else if (p_grid[pos.y][pos.x + i] == Map::Bloc::BREAKABLE) {
+      p_destroyCase(Ogre::Vector2(pos.x + i, pos.y));
+      break;
+    }
+  for (int i = 1 ; i <= power ; ++i)
+    if (p_grid[pos.y][pos.x - i] == Map::Bloc::WALL)
+      break;
+    else if (p_grid[pos.y][pos.x - i] == Map::Bloc::BREAKABLE) {
+      p_destroyCase(Ogre::Vector2(pos.x - i, pos.y));
+      break;
+    }
 }
 
 const Ogre::Vector3&  Map::getMapDim(void) const
@@ -101,7 +130,9 @@ void    Map::generateMap(size_t width, size_t height, float density)
       if (!i || !j || i == height - 1 || j == width - 1 ||
           (i % 2 == 0 && j % 2 == 0)) {
         p_grid[i][j] = Map::Bloc::WALL;
-      } else if (rand() % 100 >= density * 100) {
+      } else if (rand() % 100 >= density * 100 ||
+                 ((j <= 2 || j >= width - 3) &&
+                  (i <= 2 || i >= height - 3))) {
         p_grid[i][j] = Map::Bloc::EMPTY;
       } else {
         p_grid[i][j] = Map::Bloc::BREAKABLE;
