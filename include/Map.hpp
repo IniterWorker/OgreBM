@@ -26,7 +26,7 @@ public:
 
   typedef std::vector<std::vector<Bloc>>        Grid;
 
-  Map(Ogre::SceneManager *mgr, size_t width = 101, size_t height = 101, float density = 0.5f);
+  Map(Ogre::SceneManager *mgr, size_t width = 21, size_t height = 21, float density = 0.5f);
   ~Map(void);
 
   void  makeExplosion(const Ogre::Vector2&, int power);
