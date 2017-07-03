@@ -20,7 +20,7 @@ void GameState::enter() {
 
     // SceneManager
     _sceneManager = OgreFramework::getSingletonPtr()->_root->createSceneManager(Ogre::ST_GENERIC, "GameSceneMgr");
-    _sceneManager->setAmbientLight(Ogre::ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
+    _sceneManager->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     _sceneManager->addRenderQueueListener(OgreFramework::getSingletonPtr()->_overlaySystem);
 
@@ -37,19 +37,25 @@ void GameState::createScene() {
     // SkyBox
     _sceneManager->setSkyBox(true, "Examples/SpaceSkyBox", 300);
 
-    _map = new Map(_sceneManager);
+    // Map
+    _map = new Map(_sceneManager, 10, 10);
+
     // Light
     _light = _sceneManager->createLight("MainLight");
     _light->setDiffuseColour(Ogre::ColourValue(1.0, 1.0, 1.0));
-    _light->setPosition(0, 200, 0);
 
     // Init Camera
     _camera = _sceneManager->createCamera("MainCamera");
     _camera->setAspectRatio(
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualWidth()) /
             Ogre::Real(OgreFramework::getSingletonPtr()->_viewport->getActualHeight()));
-    _camera->setPosition(500, 500, 500);
-    _camera->lookAt(0, 0, 0);
+    _camera->setPosition(_map->getMapDim().x * 1.5f, _map->getMapDim().y * 10, _map->getMapDim().z / 2);
+    _camera->setNearClipDistance(2);
+    _camera->lookAt(_map->getMapDim() / 2);
+    Ogre::Vector3 vec = _map->getMapDim();
+    vec /= 2;
+    vec.y += 100;
+    _light->setPosition(vec);
 
     OgreFramework::getSingletonPtr()->_viewport->setCamera(_camera);
 }
