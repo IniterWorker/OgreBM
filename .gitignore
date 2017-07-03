@@ -101,3 +101,5 @@ luac.out
 *.x86_64
 *.hex
 .idea
+cmake-build-debug
+build

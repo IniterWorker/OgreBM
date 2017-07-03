@@ -53,23 +53,7 @@ if(UNIX)
           message(SEND_ERROR "Failed to find module path.")
         endif(EXISTS "/usr/local/lib/OGRE/cmake/")
 
-        # OgreBullet
-        if(EXISTS "/usr/local/lib/OgreBullet/cmake/")
-                set(CMAKE_MODULE_PATH "/usr/local/lib/OgreBullet/cmake/;${CMAKE_MODULE_PATH}")
-        elseif(EXISTS "/usr/lib/OgreBullet/cmake/")
-                set(CMAKE_MODULE_PATH "/usr/lib/OgreBullet/cmake/;${CMAKE_MODULE_PATH}")
-        else ()
-                message(SEND_ERROR "Failed to find module path.")
-        endif(EXISTS "/usr/local/lib/OgreBullet/cmake/")
 
-        # CEGUI
-        if(EXISTS "/usr/local/lib/cegui-0.8/cmake/")
-                set(CMAKE_MODULE_PATH "/usr/local/lib/cegui-0.8/cmake/;${CMAKE_MODULE_PATH}")
-        elseif(EXISTS "/usr/lib/cegui-0.8/cmake/")
-                set(CMAKE_MODULE_PATH "/usr/lib/cegui-0.8/cmake/;${CMAKE_MODULE_PATH}")
-        else ()
-                message(SEND_ERROR "Failed to find module path.")
-        endif(EXISTS "/usr/local/lib/cegui-0.8/cmake/")
 endif(UNIX)
 
 if (CMAKE_BUILD_TYPE STREQUAL "")
@@ -196,13 +180,6 @@ if(Boost_FOUND)
 endif(Boost_FOUND)
 
 # =============================================================================
-# == BulletFind
-# =============================================================================
-
-find_package(Bullet REQUIRED)
-find_package(OgreBullet REQUIRED)
-
-# =============================================================================
 # == SOURCES
 # =============================================================================
 
@@ -217,7 +194,7 @@ set(CLIENT_SRCS
         include/Application.hpp
         src/Main.cpp
         src/OgreFramework.cpp
-        include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp)
+        include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp src/States/SplashState.cpp include/States/SplashState.hpp)
 
 include_directories(
         include
