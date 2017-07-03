@@ -18,8 +18,6 @@ Game::Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager) :
 Game::~Game() {
     delete _map;
     _map = nullptr;
-    delete _controller;
-    _controller = nullptr;
 }
 
 void Game::update(Ogre::Real elapsedTime) {
