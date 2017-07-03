@@ -12,6 +12,7 @@
 # include <map>
 # include <string>
 # include <cstdlib>
+# include <array>
 
 class   Map
 {
@@ -26,7 +27,7 @@ public:
 
   typedef std::vector<std::vector<Bloc>>        Grid;
 
-  Map(Ogre::SceneManager *mgr, size_t width = 21, size_t height = 21, float density = 0.5f);
+  Map(Ogre::SceneManager *mgr, size_t width = 21, size_t height = 21, float density = 0.8f);
   ~Map(void);
 
   void  makeExplosion(const Ogre::Vector2&, int power);
@@ -34,9 +35,13 @@ public:
 
   const Ogre::Vector3&  getMapDim(void) const;
 
+  const Ogre::Vector3&  getBlocDim(void) const;
+
   const Grid&   accessGrid(void) const;
 
   Ogre::SceneNode *getNodeRoot();
+
+  const Ogre::Vector3&  getStartEmplacement(int nb) const;
 
 private:
 
@@ -49,11 +54,14 @@ private:
   std::vector<std::vector<Ogre::SceneNode*>>  p_drawMap;
   std::vector<std::vector<Ogre::SceneNode*>>  p_subPlane;
 
+  std::array<Ogre::Vector3, 4>    p_startEmplacements;
+
   Ogre::SceneNode*    p_base;
 
   Ogre::SceneManager    *p_mgr;
 
   Ogre::Vector3 p_dim;
+  Ogre::Vector3 p_blocDim;
 
   static const std::map<Bloc, std::string>      p_blocMesh;
 

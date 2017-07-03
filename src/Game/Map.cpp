@@ -11,10 +11,17 @@ Map::Map(Ogre::SceneManager *mgr, size_t width, size_t height, float density)
 
   Ogre::Entity *wall = p_mgr->createEntity("beginSample", p_blocMesh.at(Map::Bloc::WALL));
   p_base = p_mgr->getRootSceneNode()->createChildSceneNode();
+  p_startEmplacements[0] = Ogre::Vector3::ZERO;
+  p_startEmplacements[1] = Ogre::Vector3::ZERO;
+  p_startEmplacements[2] = Ogre::Vector3::ZERO;
+  p_startEmplacements[3] = Ogre::Vector3::ZERO;
   generateMap(width, height, density);
   p_dim.x = width * wall->getBoundingBox().getSize().x;
   p_dim.z = height * wall->getBoundingBox().getSize().z;
   p_dim.y = wall->getBoundingBox().getSize().y;
+  p_blocDim.x = wall->getBoundingBox().getSize().x;
+  p_blocDim.z = wall->getBoundingBox().getSize().z;
+  p_blocDim.y = wall->getBoundingBox().getSize().y;
   p_mgr->destroyEntity("beginSample");
 }
 
@@ -108,6 +115,11 @@ const Ogre::Vector3&  Map::getMapDim(void) const
   return (p_dim);
 }
 
+const Ogre::Vector3&  Map::getBlocDim(void) const
+{
+  return (p_blocDim);
+}
+
 void    Map::generateMap(size_t width, size_t height, float density)
 {
   Ogre::Entity *wall = p_mgr->createEntity("sample", p_blocMesh.at(Map::Bloc::WALL));
@@ -133,6 +145,14 @@ void    Map::generateMap(size_t width, size_t height, float density)
       } else if (rand() % 100 >= density * 100 ||
                  ((j <= 2 || j >= width - 3) &&
                   (i <= 2 || i >= height - 3))) {
+        if (j <= 2 && i <= 2 && p_startEmplacements[1] == Ogre::Vector3::ZERO)
+          p_startEmplacements[1] = p_drawMap[i][j]->getPosition();
+        else if (j <= 2 && i >= height - 3 && p_startEmplacements[0] == Ogre::Vector3::ZERO)
+          p_startEmplacements[0] = p_drawMap[i][j]->getPosition();
+        else if (j >= width - 3 && i <= 2 && p_startEmplacements[2] == Ogre::Vector3::ZERO)
+          p_startEmplacements[2] = p_drawMap[i][j]->getPosition();
+        else if (j >= width - 3 && i >= height - 3 && p_startEmplacements[3] == Ogre::Vector3::ZERO)
+          p_startEmplacements[3] = p_drawMap[i][j]->getPosition();
         p_grid[i][j] = Map::Bloc::EMPTY;
       } else {
         p_grid[i][j] = Map::Bloc::BREAKABLE;
@@ -145,4 +165,9 @@ void    Map::generateMap(size_t width, size_t height, float density)
 
 Ogre::SceneNode *Map::getNodeRoot() {
     return p_base;
+}
+
+const Ogre::Vector3&    Map::getStartEmplacement(int id) const
+{
+  return (p_startEmplacements[id]);
 }
