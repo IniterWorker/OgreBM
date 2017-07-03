@@ -12,6 +12,7 @@
 
 
 #include <vector>
+#include <Entities/Body.hpp>
 #include <Entities/Player.hpp>
 #include "Map.hpp"
 
@@ -19,7 +20,7 @@ class Game {
 protected:
     Ogre::SceneManager *_sceneManager;
     Ogre::RenderWindow *_renderWindow;
-    std::vector<Player *> _vPlayers;
+    std::vector<Body *> _vPlayers;
     Map *_map;
 public:
     Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager);
@@ -30,7 +31,9 @@ public:
 
     Map *getMap();
 
-    std::vector<Player *> &getPlayers();
+    void addPlayer(Player *player);
+
+    std::vector<Body *> &getPlayers();
 };
 
 

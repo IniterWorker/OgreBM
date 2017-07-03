@@ -7,6 +7,7 @@
 //-----------------------------------------------------------------------------
 //
 
+#include <OgreFramework.hpp>
 #include "Game/InputManager.hpp"
 
 template<> InputManager *Ogre::Singleton<InputManager>::msSingleton = 0;
@@ -188,10 +189,10 @@ InputManager::InputManager(void) : mMouse(0), mKeyboard(0), mInputSystem(0) {
 }
 
 bool InputManager::keyPressed(const OIS::KeyEvent &e) {
-    itKeyListener    = mKeyListeners.begin();
+    itKeyListener = mKeyListeners.begin();
     itKeyListenerEnd = mKeyListeners.end();
-    for(; itKeyListener != itKeyListenerEnd; ++itKeyListener ) {
-        if(!itKeyListener->second->keyPressed( e ))
+    for (; itKeyListener != itKeyListenerEnd; ++itKeyListener) {
+        if (!itKeyListener->second->keyPressed(e))
             break;
     }
 
@@ -199,10 +200,10 @@ bool InputManager::keyPressed(const OIS::KeyEvent &e) {
 }
 
 bool InputManager::keyReleased(const OIS::KeyEvent &e) {
-    itKeyListener    = mKeyListeners.begin();
+    itKeyListener = mKeyListeners.begin();
     itKeyListenerEnd = mKeyListeners.end();
-    for(; itKeyListener != itKeyListenerEnd; ++itKeyListener ) {
-        if(!itKeyListener->second->keyReleased( e ))
+    for (; itKeyListener != itKeyListenerEnd; ++itKeyListener) {
+        if (!itKeyListener->second->keyReleased(e))
             break;
     }
 
@@ -210,10 +211,10 @@ bool InputManager::keyReleased(const OIS::KeyEvent &e) {
 }
 
 bool InputManager::mouseMoved(const OIS::MouseEvent &e) {
-    itMouseListener    = mMouseListeners.begin();
+    itMouseListener = mMouseListeners.begin();
     itMouseListenerEnd = mMouseListeners.end();
-    for(; itMouseListener != itMouseListenerEnd; ++itMouseListener ) {
-        if(!itMouseListener->second->mouseMoved( e ))
+    for (; itMouseListener != itMouseListenerEnd; ++itMouseListener) {
+        if (!itMouseListener->second->mouseMoved(e))
             break;
     }
 
@@ -221,10 +222,10 @@ bool InputManager::mouseMoved(const OIS::MouseEvent &e) {
 }
 
 bool InputManager::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
-    itMouseListener    = mMouseListeners.begin();
+    itMouseListener = mMouseListeners.begin();
     itMouseListenerEnd = mMouseListeners.end();
-    for(; itMouseListener != itMouseListenerEnd; ++itMouseListener ) {
-        if(!itMouseListener->second->mousePressed( e, id ))
+    for (; itMouseListener != itMouseListenerEnd; ++itMouseListener) {
+        if (!itMouseListener->second->mousePressed(e, id))
             break;
     }
 
@@ -232,10 +233,10 @@ bool InputManager::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 }
 
 bool InputManager::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
-    itMouseListener    = mMouseListeners.begin();
+    itMouseListener = mMouseListeners.begin();
     itMouseListenerEnd = mMouseListeners.end();
-    for(; itMouseListener != itMouseListenerEnd; ++itMouseListener ) {
-        if(!itMouseListener->second->mouseReleased( e, id ))
+    for (; itMouseListener != itMouseListenerEnd; ++itMouseListener) {
+        if (!itMouseListener->second->mouseReleased(e, id))
             break;
     }
 

@@ -142,3 +142,7 @@ void    Map::generateMap(size_t width, size_t height, float density)
   }
   p_mgr->destroyEntity("sample");
 }
+
+Ogre::SceneNode *Map::getNodeRoot() {
+    return p_base;
+}

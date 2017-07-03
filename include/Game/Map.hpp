@@ -36,6 +36,8 @@ public:
 
   const Grid&   accessGrid(void) const;
 
+  Ogre::SceneNode *getNodeRoot();
+
 private:
 
   void  p_destroyCase(const Ogre::Vector2&, bool = false);

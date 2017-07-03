@@ -196,7 +196,7 @@ set(CLIENT_SRCS
         src/Game/Map.cpp
         src/Main.cpp
         src/OgreFramework.cpp
-        include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp src/States/SplashState.cpp include/States/SplashState.hpp src/Entities/Player.cpp include/Entities/Player.hpp src/Game/Game.cpp include/Game/Game.hpp src/Game/InputManager.cpp include/Game/InputManager.hpp)
+        include/OgreFramework.hpp src/States/GameState.cpp include/States/GameState.hpp src/States/SplashState.cpp include/States/SplashState.hpp src/Entities/Body.cpp include/Entities/Body.hpp src/Game/Game.cpp include/Game/Game.hpp src/Game/InputManager.cpp include/Game/InputManager.hpp src/Game/InputController.cpp include/Game/InputController.hpp src/Entities/Player.cpp include/Entities/Player.hpp src/Entities/IA.cpp include/Entities/IA.hpp)
 
 include_directories(
         include

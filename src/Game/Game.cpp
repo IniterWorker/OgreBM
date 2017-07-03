@@ -23,8 +23,15 @@ Game::~Game() {
 void Game::update(Ogre::Real elapsedTime) {
 
     // Inject elapsedTime in all players
+    InputController::ActionPlayer action;
     for (auto it = _vPlayers.begin(); it != _vPlayers.end(); ++it) {
         (*it)->update(elapsedTime);
+        if ((*it)->getLastAction(action)) {
+            // execute action
+            auto move = (*it)->getNodeRoot()->getPosition();
+            move.x += 100;
+            (*it)->getNodeRoot()->setPosition(move);
+        }
     }
 
     // Inject elapsedTime in all bombs
@@ -34,6 +41,10 @@ Map *Game::getMap() {
     return _map;
 }
 
-std::vector<Player *> &Game::getPlayers() {
+std::vector<Body *> &Game::getPlayers() {
     return _vPlayers;
+}
+
+void Game::addPlayer(Player *player) {
+    _vPlayers.push_back(static_cast<Body *>(player));
 }

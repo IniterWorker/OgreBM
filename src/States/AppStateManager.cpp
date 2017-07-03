@@ -128,8 +128,12 @@ void AppStateManager::shutdown() {
 }
 
 void AppStateManager::init(AppState *state) {
-    OgreFramework::getSingletonPtr()->_keyboard->setEventCallback(state);
-    OgreFramework::getSingletonPtr()->_mouse->setEventCallback(state);
+    InputManager::getSingletonPtr()->removeKeyListener("StateKeyboard");
+    InputManager::getSingletonPtr()->removeMouseListener("StateMouse");
+
+    InputManager::getSingletonPtr()->addKeyListener(state, "StateKeyboard");
+    InputManager::getSingletonPtr()->addMouseListener(state, "StateMouse");
+
     OgreFramework::getSingletonPtr()->_trayManager->setListener(state);
 
     OgreFramework::getSingletonPtr()->_window->resetStatistics();
@@ -139,8 +143,7 @@ bool AppStateManager::frameRenderingQueued(const Ogre::FrameEvent &evt) {
     if (OgreFramework::getSingletonPtr()->_window->isClosed())
         return false;
 
-    OgreFramework::getSingletonPtr()->_keyboard->capture();
-    OgreFramework::getSingletonPtr()->_mouse->capture();
+    InputManager::getSingletonPtr()->capture();
 
     if (_isShutdown)
         return false;

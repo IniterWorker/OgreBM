@@ -10,37 +10,17 @@
 #ifndef OGREBM_PLAYER_HPP
 #define OGREBM_PLAYER_HPP
 
-#include <OGRE/OgreTimer.h>
-#include <OGRE/OgreSceneManager.h>
-#include <string>
 
-class Player {
-protected:
-    std::string _name;
-    Ogre::SceneNode *_nodeRoot;
-    Ogre::SceneNode *_nodeHead;
-    Ogre::SceneNode *_nodeBody;
-    Ogre::Entity *_entityHead;
-    Ogre::Entity *_entityBody;
+#include <OgreSceneManager.h>
+#include "Body.hpp"
+
+class Player : public Body, public OIS::KeyListener {
 public:
     Player(Ogre::SceneManager *sceneManager, const std::string &name);
 
-    virtual ~Player();
+    bool keyPressed(const OIS::KeyEvent &arg) override;
 
-    virtual void update(Ogre::Real elapsedTime);
-
-    virtual void moveUp();
-
-    virtual void moveDown();
-
-    virtual void moveLeft();
-
-    virtual void moveRight();
-
-    virtual void hitBomb();
-
-    virtual void newBomb();
+    bool keyReleased(const OIS::KeyEvent &arg) override;
 };
-
 
 #endif //OGREBM_PLAYER_HPP

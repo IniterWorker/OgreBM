@@ -40,6 +40,12 @@ void GameState::enter() {
 void GameState::createScene() {
     // Map
     Map *map = _game->getMap();
+    map->getNodeRoot()->removeAllChildren();
+
+    _player = new Player(_sceneManager, "MyPlayer");
+    InputManager::getSingletonPtr()->addKeyListener(_player, "MyPlayerKeyboard");
+
+    _game->addPlayer(_player);
 
     // SkyBox
     _sceneManager->setSkyBox(true, "Examples/SpaceSkyBox", 300);

@@ -122,8 +122,8 @@ OgreFramework::initOgre(Ogre::String wndTitle, OIS::KeyListener *pKeyListener,
     _inputManager = new InputManager();
     InputManager::getSingletonPtr()->initialise(_window);
 
-    InputManager::getSingletonPtr()->addKeyListener(this, "OgreFramework");
-    InputManager::getSingletonPtr()->addMouseListener(this, "OgreFramework");
+    InputManager::getSingletonPtr()->addKeyListener(this, "OgreFrameworkKey");
+    InputManager::getSingletonPtr()->addMouseListener(this, "OgreFrameworkMouse");
 
     _initResourcesConfiguration();
 

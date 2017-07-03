@@ -48,6 +48,7 @@ private:
     Ogre::Light *_light;
     Ogre::Camera *_camera;
     Game *_game;
+    Player *_player;
 };
 
 
