@@ -38,7 +38,7 @@ void GameState::createScene() {
     _sceneManager->setSkyBox(true, "Examples/SpaceSkyBox", 300);
 
     // Map
-    _map = new Map(_sceneManager, 10, 10);
+    _map = new Map(_sceneManager, 15, 15);
 
     // Light
     _light = _sceneManager->createLight("MainLight");

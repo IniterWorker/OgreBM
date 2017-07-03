@@ -58,15 +58,14 @@ void    Map::p_destroyCase(const Ogre::Vector2& pos)
 
 void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType)
 {
-  if (blocType == Map::Bloc::EMPTY)
-    return ;
   std::ostringstream    os;
 
   os << "Bloc" << pos;
 
-  p_drawMap[pos.y][pos.x]->attachObject(p_mgr->createEntity(os.str(), p_blocMesh.at(blocType)));
   p_subPlane[pos.y][pos.x]->attachObject(p_mgr->createEntity("Sub" + os.str(), p_blocMesh.at(Map::Bloc::WALL)));
   p_grid[pos.y][pos.x] = blocType;
+  if (blocType != Map::Bloc::EMPTY)
+    p_drawMap[pos.y][pos.x]->attachObject(p_mgr->createEntity(os.str(), p_blocMesh.at(blocType)));
 }
 
 void    Map::makeExplosion(const Ogre::Vector2& pos, int power)
