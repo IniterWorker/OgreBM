@@ -1,0 +1,22 @@
+// bloc_wood genrated by blender2ogre 0.6.0
+
+material bloc_wood 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass bloc_wood
+        {
+            ambient 1.0 1.0 1.0 1.0
+	    
+            texture_unit 
+            {
+                texture bloc_wood.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}

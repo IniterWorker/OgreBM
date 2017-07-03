@@ -1,0 +1,22 @@
+// bomb_red genrated by blender2ogre 0.6.0
+
+material bomb_red 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass bomb_red
+        {
+            ambient 1.0 1.0 1.0 1.0
+
+            texture_unit 
+            {
+                texture bomb_uv_red.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}

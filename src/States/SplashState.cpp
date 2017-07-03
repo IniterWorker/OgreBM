@@ -10,7 +10,7 @@
 #include "OgreFramework.hpp"
 #include "States/SplashState.hpp"
 
-SplashState::SplashState() : _firstLoad(false), _isQuit(false), _time(0), _awaitingTime(5) {
+SplashState::SplashState() : _firstLoad(false), _isQuit(false), _time(0), _awaitingTime(0.5) {
 
 }
 

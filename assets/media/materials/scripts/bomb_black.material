@@ -1,0 +1,22 @@
+// bomb_black genrated by blender2ogre 0.6.0
+
+material bomb_black 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass bomb_black
+        {
+            ambient 1.0 1.0 1.0 1.0
+
+            texture_unit 
+            {
+                texture bomb_uv_black.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}
