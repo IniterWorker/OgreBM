@@ -18,9 +18,10 @@ Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(na
     _nodeBody = _nodeRoot->createChildSceneNode(name + "_body");
     _nodeHead = _nodeRoot->createChildSceneNode(name + "_head");
 
-    _entityBody = sceneManager->createEntity("ogrehead.mesh");
+    _entityBody = sceneManager->createEntity("Sinbad_green.mesh");
 
     _nodeBody->attachObject(_entityBody);
+    _nodeBody->setScale(Ogre::Vector3(3, 4, 3));
 }
 
 Body::~Body() {
@@ -28,7 +29,6 @@ Body::~Body() {
 }
 
 void Body::update(Ogre::Real elapsedTime) {
-
 }
 
 Ogre::SceneNode *Body::getNodeRoot() {

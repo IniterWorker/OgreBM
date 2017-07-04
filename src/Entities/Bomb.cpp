@@ -9,7 +9,6 @@ Bomb::Bomb(Ogre::SceneManager *mgr, const Ogre::Vector2& pos, const Map& map, in
   p_entity_black = mgr->createEntity("Black" + os.str(), "bomb_black.mesh");
   p_entity_red = mgr->createEntity("Red" + os.str(), "bomb_red.mesh");
   p_node->setPosition(Ogre::Vector3(pos.x * map.getBlocDim().x, 0, pos.y * map.getBlocDim().z));
-  p_node->setScale(Ogre::Vector3(2, 2, 2));
   p_node->attachObject(p_entity_black);
   p_pos = pos;
   p_cooldown = 1.5;
@@ -38,7 +37,7 @@ bool  Bomb::update(float elapsedTime, Map& map, const std::vector<Bomb*>& bombs,
       p_node->detachObject(p_entity_black);
       p_node->attachObject(p_entity_red);
     } catch (std::exception) {}
-    p_node->setScale(Ogre::Vector3(2.5, 2.5, 2.5));
+    p_node->setScale(Ogre::Vector3(1.25, 1.25, 1.25));
   } else {
     try {
       p_node->detachObject(p_entity_red);

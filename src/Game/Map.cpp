@@ -246,6 +246,7 @@ void    Map::update(float elapsedTime)
         float scale = 2 / p_explosionCooldown[i][j];
         if (scale > 2.5)
           scale = 2.5;
+        scale /= 2;
         p_drawMap[i][j]->setScale(Ogre::Vector3(scale, scale, scale));
       }
     }
