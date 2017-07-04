@@ -33,5 +33,7 @@ bool Player::keyPressed(const OIS::KeyEvent &arg) {
 }
 
 bool Player::keyReleased(const OIS::KeyEvent &arg) {
+    if (_qInput.size())
+        _qInput.pop();
     return false;
 }

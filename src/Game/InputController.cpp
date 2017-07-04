@@ -49,6 +49,5 @@ bool InputController::getLastAction(InputController::ActionPlayer &action) {
         return false;
 
     action = _qInput.front();
-    _qInput.pop();
     return true;
 }
