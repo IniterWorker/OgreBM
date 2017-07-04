@@ -1,0 +1,26 @@
+material OgreBMWin/WinBase
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_check off
+        }
+    }
+}
+
+material OgreBMWin/WinLogo : OgreBMWin/WinBase
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture win_screen.png
+            }
+        }
+    }
+}

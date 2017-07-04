@@ -39,7 +39,7 @@ Body::Body(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, 
 }
 
 Body::~Body() {
-
+  _nodeBody->detachObject(_entityBody);
 }
 
 void Body::update(Ogre::Real elapsedTime) {
