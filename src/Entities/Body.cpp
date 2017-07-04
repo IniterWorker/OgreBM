@@ -37,7 +37,7 @@ Body::Body(Ogre::SceneManager *sceneManager, const std::string &name, int id) : 
 }
 
 Body::~Body() {
-
+  _nodeBody->detachObject(_entityBody);
 }
 
 void Body::update(Ogre::Real elapsedTime) {

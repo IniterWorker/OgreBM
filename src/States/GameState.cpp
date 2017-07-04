@@ -118,6 +118,17 @@ void GameState::update(Ogre::Real timeSinceLastFrame) {
     if (!_player->isAlive())
       changeAppState(findByName("LoseState"));
 
+    for (auto i = _game->getPlayers().begin() ; i !=  _game->getPlayers().end() ; ++i) {
+      if (!(*i)->isAlive()) {
+        delete (*i);
+        _game->getPlayers().erase(i);
+        break;
+      }
+    }
+
+    if (_game->getPlayers().size() == 1)
+      changeAppState(findByName("WinState"));
+
     if (_isQuit) {
         shutdown();
         return;

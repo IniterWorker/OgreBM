@@ -201,6 +201,8 @@ set(CLIENT_SRCS
         src/States/OptState.cpp
         include/States/LoseState.hpp
         src/States/LoseState.cpp
+        include/States/WinState.hpp
+        src/States/WinState.cpp
         src/Application.cpp
         include/Application.hpp
         include/Game/Map.hpp

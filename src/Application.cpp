@@ -13,6 +13,7 @@
 #include <States/SplashState.hpp>
 #include "States/GameState.hpp"
 #include "States/LoseState.hpp"
+#include "States/WinState.hpp"
 #include "States/OptState.hpp"
 #include "States/MenuState.hpp"
 #include "States/AppStateManager.hpp"
@@ -42,6 +43,7 @@ void Application::start() {
     SplashState::create(_appStateManager, "SplashState");
     OptState::create(_appStateManager, "OptState");
     LoseState::create(_appStateManager, "LoseState");
+    WinState::create(_appStateManager, "WinState");
 
     OgreFramework::getSingletonPtr()->_log->logMessage("State initialized!");
     _appStateManager->start(_appStateManager->findByName("SplashState"));
