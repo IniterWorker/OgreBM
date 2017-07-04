@@ -22,6 +22,7 @@ void GameState::enter() {
     _sceneManager = OgreFramework::getSingletonPtr()->_root->createSceneManager(Ogre::ST_GENERIC, "GameSceneMgr");
     _sceneManager->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+    _sceneManager->setShadowColour(Ogre::ColourValue(0.95, 0.95, 0.95, 0.1));
     _sceneManager->addRenderQueueListener(OgreFramework::getSingletonPtr()->_overlaySystem);
 
     // Init Game Data
@@ -29,8 +30,8 @@ void GameState::enter() {
 
     // TrayManager
     OgreFramework::getSingletonPtr()->_trayManager->destroyAllWidgets();
-    OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "GameState", 250);
+    // OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    // OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "GameState", 250);
 
 
     // Scene

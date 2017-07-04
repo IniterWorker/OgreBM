@@ -10,7 +10,7 @@
 #include "OgreFramework.hpp"
 #include "States/SplashState.hpp"
 
-SplashState::SplashState() : _firstLoad(false), _isQuit(false), _time(0), _awaitingTime(0.5) {
+SplashState::SplashState() : _firstLoad(false), _isQuit(false), _time(0), _awaitingTime(2) {
 
 }
 
@@ -26,8 +26,9 @@ void SplashState::enter() {
 
     // TrayManager
     OgreFramework::getSingletonPtr()->_trayManager->destroyAllWidgets();
-    OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "SplashState", 250);
+    OgreFramework::getSingletonPtr()->_trayManager->hideCursor();
+    // OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    // OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "SplashState", 250);
 
     // Scene
     createScene();
