@@ -1,0 +1,26 @@
+material OgreBMLose/LoseBase
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_check off
+        }
+    }
+}
+
+material OgreBMLose/LoseLogo : OgreBMLose/LoseBase
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture lose_screen.png
+            }
+        }
+    }
+}

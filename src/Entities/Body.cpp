@@ -16,7 +16,7 @@ const std::array<std::string, 4>      Body::_meshPlayers = {
   "Sinbad_red.mesh"
 };
 
-Body::Body(Ogre::SceneManager *sceneManager, const std::string &name, int id) : _name(name), _bombPower(1), _maxBombs(1)
+Body::Body(Ogre::SceneManager *sceneManager, const std::string &name, int id) : _name(name), _bombPower(1), _maxBombs(1), _alive(true)
 {
     if (sceneManager == nullptr)
         throw std::runtime_error("Player Manager Error");
@@ -70,5 +70,11 @@ void    Body::removeBomb(void)
 void  Body::receiveExplosion(void)
 {
   //player die or something like that ...
-  std::cerr << "AH !" << std::endl;
+  std::cerr << "AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !" << std::endl;
+  _alive = false;
+}
+
+bool    Body::isAlive(void) const
+{
+  return (_alive);
 }

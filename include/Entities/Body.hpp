@@ -37,6 +37,8 @@ protected:
   Ogre::Vector2 _pos;
 
   static const std::array<std::string, 4>      _meshPlayers;
+
+  bool  _alive;
 public:
   Body(Ogre::SceneManager *sceneManager, const std::string &name, int id);
 
@@ -51,6 +53,7 @@ public:
   Bomb  *putNewBomb(Ogre::SceneManager*, const Ogre::Vector2&, const Map&);
   void  removeBomb(void);
   void  receiveExplosion(void);
+  bool  isAlive(void) const;
 };
 
 

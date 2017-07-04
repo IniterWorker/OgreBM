@@ -47,6 +47,7 @@ void GameState::createScene() {
 
     _game->addPlayer(_player);
     _game->addIA("Bot1", "./ia/basic_ia.lua");
+    _game->addIA("Bot2", "./ia/basic_ia.lua");
     // _game->addIA("Bot2", "./ia/basic_ia.lua");
     // _game->addIA("Bot3", "./ia/basic_ia.lua");
 
@@ -113,6 +114,9 @@ void GameState::update(Ogre::Real timeSinceLastFrame) {
     OgreFramework::getSingletonPtr()->_trayManager->frameRenderingQueued(_FrameEvent);
 
     _game->update(timeSinceLastFrame);
+
+    if (!_player->isAlive())
+      changeAppState(findByName("LoseState"));
 
     if (_isQuit) {
         shutdown();
