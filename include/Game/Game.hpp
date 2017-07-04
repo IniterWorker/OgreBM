@@ -24,6 +24,7 @@ protected:
     std::vector<Body *> _vPlayers;
     std::vector<Bomb *> _vBombs;
     Map *_map;
+  float _mvCooldown;
 public:
     Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager);
 

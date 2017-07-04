@@ -13,6 +13,7 @@ Game::Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager) :
         _renderWindow(renderWindow),
         _sceneManager(sceneManager) {
   _map = new Map(sceneManager, 15, 15);
+  _mvCooldown = 0;
 }
 
 Game::~Game() {
@@ -31,10 +32,12 @@ void Game::update(Ogre::Real elapsedTime) {
         break;
       }
     }
+    _mvCooldown -= elapsedTime;
     for (auto it = _vPlayers.begin(); it != _vPlayers.end(); ++it) {
         (*it)->update(elapsedTime);
-        if ((*it)->getLastAction(action)) {
+        if (_mvCooldown <= 0 && (*it)->getLastAction(action)) {
             // execute action
+          _mvCooldown = 0.15;
             auto move = (*it)->getNodeRoot()->getPosition();
             Ogre::Vector2 pos = (*it)->getPos();
             switch (action) {
