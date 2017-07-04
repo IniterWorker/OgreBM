@@ -25,6 +25,7 @@ void Game::update(Ogre::Real elapsedTime) {
 
     // Inject elapsedTime in all players
     InputController::ActionPlayer action;
+    _map->update(elapsedTime);
     for (auto i = _vBombs.begin() ; i != _vBombs.end() ; ++i) {
       if ((*i)->update(elapsedTime, *_map, _vBombs, _vPlayers)) {
         delete (*i);

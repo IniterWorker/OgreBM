@@ -2,10 +2,12 @@
 
 const std::map<Map::Bloc, std::string>      Map::p_blocMesh = {
   {Map::Bloc::WALL, "stone.mesh"},
-  {Map::Bloc::BREAKABLE, "wood.mesh"}
+  {Map::Bloc::BREAKABLE, "wood.mesh"},
+  {Map::Bloc::EXPLOSION, "explosion.mesh"}
 };
 
-Map::Map(Ogre::SceneManager *mgr, size_t width, size_t height, float density)
+Map::Map(Ogre::SceneManager *mgr, size_t width, size_t height, float density):
+  p_explosionCooldownTime(0.5)
 {
   p_mgr = mgr;
 
@@ -41,6 +43,7 @@ void    Map::p_clearMap(void)
   p_grid.clear();
   p_drawMap.clear();
   p_subPlane.clear();
+  p_explosionCooldown.clear();
 }
 
 const Map::Grid&     Map::accessGrid(void) const
@@ -65,13 +68,14 @@ void    Map::p_destroyCase(const Ogre::Vector2& pos, bool end)
   } catch (std::exception) {}
 }
 
-void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType)
+void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType, bool begin)
 {
   std::ostringstream    os;
 
   os << "Bloc" << pos;
 
-  p_subPlane[pos.y][pos.x]->attachObject(p_mgr->createEntity("Sub" + os.str(), p_blocMesh.at(Map::Bloc::WALL)));
+  if (begin)
+    p_subPlane[pos.y][pos.x]->attachObject(p_mgr->createEntity("Sub" + os.str(), p_blocMesh.at(Map::Bloc::WALL)));
   p_grid[pos.y][pos.x] = blocType;
   if (blocType != Map::Bloc::EMPTY)
     p_drawMap[pos.y][pos.x]->attachObject(p_mgr->createEntity(os.str(), p_blocMesh.at(blocType)));
@@ -79,6 +83,7 @@ void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType)
 
 void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vector<Bomb*>& bombs, const std::vector<Body*>& players)
 {
+  p_explosionCooldown[pos.y][pos.x] = p_explosionCooldownTime;
   for (int i = 1 ; i <= power ; ++i) {
     for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
       if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y + i))
@@ -92,8 +97,10 @@ void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vecto
       break;
     else if (p_grid[pos.y + i][pos.x] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x, pos.y + i));
+      p_explosionCooldown[pos.y + i][pos.x] = p_explosionCooldownTime;
       break;
     }
+    p_explosionCooldown[pos.y + i][pos.x] = p_explosionCooldownTime;
   }
   for (int i = 1 ; i <= power ; ++i) {
     for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
@@ -108,8 +115,10 @@ void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vecto
       break;
     else if (p_grid[pos.y - i][pos.x] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x, pos.y - i));
+      p_explosionCooldown[pos.y - i][pos.x] = p_explosionCooldownTime;
       break;
     }
+    p_explosionCooldown[pos.y - i][pos.x] = p_explosionCooldownTime;
   }
   for (int i = 1 ; i <= power ; ++i) {
     for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
@@ -124,8 +133,10 @@ void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vecto
       break;
     else if (p_grid[pos.y][pos.x + i] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x + i, pos.y));
+      p_explosionCooldown[pos.y][pos.x + i] = p_explosionCooldownTime;
       break;
     }
+    p_explosionCooldown[pos.y][pos.x + i] = p_explosionCooldownTime;
   }
   for (int i = 1 ; i <= power ; ++i) {
     for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
@@ -140,8 +151,10 @@ void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vecto
       break;
     else if (p_grid[pos.y][pos.x - i] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x - i, pos.y));
+      p_explosionCooldown[pos.y][pos.x - i] = p_explosionCooldownTime;
       break;
     }
+    p_explosionCooldown[pos.y][pos.x - i] = p_explosionCooldownTime;
   }
 }
 
@@ -163,12 +176,15 @@ void    Map::generateMap(size_t width, size_t height, float density)
   p_grid.resize(height);
   p_drawMap.resize(height);
   p_subPlane.resize(height);
+  p_explosionCooldown.resize(height);
   for (size_t i = 0 ; i < height ; ++i) {
     p_grid[i].resize(width);
     p_drawMap[i].resize(width);
     p_subPlane[i].resize(width);
+    p_explosionCooldown[i].resize(width);
     for (size_t j = 0 ; j < width ; ++j) {
       p_grid[i][j] = Map::Bloc::EMPTY;
+      p_explosionCooldown[i][j] = 0;
       p_drawMap[i][j] = p_base->createChildSceneNode();
       p_drawMap[i][j]->setPosition(j * wall->getBoundingBox().getSize().x, 0, i * wall->getBoundingBox().getSize().z);
       p_subPlane[i][j] = p_base->createChildSceneNode();
@@ -215,4 +231,23 @@ const Ogre::Vector3&    Map::getStartEmplacement(int id) const
 const Ogre::Vector2&    Map::getStartPos(int id) const
 {
   return (p_startPos[id]);
+}
+
+void    Map::update(float elapsedTime)
+{
+  for (size_t i = 0 ; i < p_grid.size() ; ++i) {
+    for (size_t j = 0 ; j < p_grid[0].size() ; ++j) {
+      if (p_explosionCooldown[i][j] > 0)
+        p_explosionCooldown[i][j] -= elapsedTime;
+      if (p_grid[i][j] == Map::Bloc::EXPLOSION)
+        p_destroyCase(Ogre::Vector2(j, i));
+      if (p_explosionCooldown[i][j] > 0) {
+        p_createCase(Ogre::Vector2(j, i), Map::Bloc::EXPLOSION, false);
+        float scale = 2 / p_explosionCooldown[i][j];
+        if (scale > 2.5)
+          scale = 2.5;
+        p_drawMap[i][j]->setScale(Ogre::Vector3(scale, scale, scale));
+      }
+    }
+  }
 }

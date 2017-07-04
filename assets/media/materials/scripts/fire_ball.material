@@ -1,0 +1,22 @@
+// fire_ball genrated by blender2ogre 0.6.0
+
+material fire_ball 
+{
+    receive_shadows on 
+
+    technique
+    {
+        pass fire_ball
+        {
+            ambient 1.0 1.0 1.0 1.0
+
+            texture_unit 
+            {
+                texture fire_ball_uv.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op modulate
+            }
+        }
+    }
+}

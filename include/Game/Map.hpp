@@ -26,6 +26,7 @@ public:
   enum class Bloc {
     EMPTY,
     WALL,
+    EXPLOSION,
     BREAKABLE
   };
 
@@ -47,17 +48,20 @@ public:
 
   const Ogre::Vector3&  getStartEmplacement(int nb) const;
   const Ogre::Vector2&  getStartPos(int nb) const;
+  void  update(float elapsedTime);
 
 private:
 
   void  p_destroyCase(const Ogre::Vector2&, bool = false);
-  void  p_createCase(const Ogre::Vector2&, Bloc);
+  void  p_createCase(const Ogre::Vector2&, Bloc, bool begin = true);
   void  p_clearMap(void);
 
   Grid  p_grid;
 
   std::vector<std::vector<Ogre::SceneNode*>>  p_drawMap;
   std::vector<std::vector<Ogre::SceneNode*>>  p_subPlane;
+
+  std::vector<std::vector<float>>  p_explosionCooldown;
 
   std::array<Ogre::Vector3, 4>    p_startEmplacements;
   std::array<Ogre::Vector2, 4>    p_startPos;
@@ -68,6 +72,8 @@ private:
 
   Ogre::Vector3 p_dim;
   Ogre::Vector3 p_blocDim;
+
+  const float   p_explosionCooldownTime;
 
   static const std::map<Bloc, std::string>      p_blocMesh;
 
