@@ -39,13 +39,24 @@ protected:
     Ogre::Vector2 _pos;
     Ogre::Vector2 _dir;
     Ogre::Real _speed;
+    Map *_map;
+
+    union CaseSearch {
+      int data[4];
+        struct {
+            int left;
+            int right;
+            int up;
+            int down;
+        } member;
+    };
 
     static const std::array<std::string, 4> _meshPlayers;
 
     bool _alive;
 
 public:
-    Body(Ogre::SceneManager *sceneManager, const std::string &name, int id);
+    Body(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, int id);
 
     virtual ~Body();
 
@@ -76,6 +87,8 @@ public:
     bool getWantBomb() const;
 
     bool isAlive(void) const;
+
+    CaseSearch lookFast(void) const;
 };
 
 

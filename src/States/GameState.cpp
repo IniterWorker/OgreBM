@@ -42,13 +42,13 @@ void GameState::createScene() {
     // Map
     Map *map = _game->getMap();
 
-    _player = new Player(_sceneManager, "MyPlayer", 0);
+    _player = new Player(_game->getMap(), _sceneManager, "MyPlayer", 0);
     InputManager::getSingletonPtr()->addKeyListener(_player, "MyPlayerKeyboard");
 
     _game->addPlayer(_player);
     _game->addIA("Bot1", "./ia/basic_ia.lua");
     _game->addIA("Bot2", "./ia/basic_ia.lua");
-    // _game->addIA("Bot2", "./ia/basic_ia.lua");
+    _game->addIA("Bot3", "./ia/basic_ia.lua");
     // _game->addIA("Bot3", "./ia/basic_ia.lua");
 
     // SkyBox

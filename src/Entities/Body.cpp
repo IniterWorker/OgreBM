@@ -17,11 +17,13 @@ const std::array<std::string, 4>      Body::_meshPlayers = {
 };
 
 
-Body::Body(Ogre::SceneManager *sceneManager, const std::string &name, int id) : _name(name), _bombPower(1), _maxBombs(1), _alive(true),
-                                                                                _pos(Ogre::Vector2::ZERO),
-                                                                                _dir(Ogre::Vector2::ZERO),
-                                                                                _speed(100),
-                                                                                _wantBomb(false)
+Body::Body(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, int id)
+        : _name(name), _bombPower(1), _maxBombs(1), _alive(true),
+          _pos(Ogre::Vector2::ZERO),
+          _dir(Ogre::Vector2::ZERO),
+          _speed(100),
+          _map(map),
+          _wantBomb(false)
 {
     if (sceneManager == nullptr)
         throw std::runtime_error("Player Manager Error");
@@ -109,4 +111,19 @@ void Body::setWantBomb(bool value) {
 
 bool Body::getWantBomb() const {
     return _wantBomb;
+}
+
+Body::CaseSearch Body::lookFast(void) const {
+    CaseSearch st;
+
+    std::memset(&st, 0, sizeof(st));
+    if (_pos.x - 1 > 0)
+        st.member.left = (int) _map->accessGrid()[_pos.y][_pos.x - 1];
+    if (_pos.x + 1 < _map->getWidth())
+        st.member.right = (int) _map->accessGrid()[_pos.y][_pos.x + 1];
+    if (_pos.y - 1 > 0)
+        st.member.up = (int) _map->accessGrid()[_pos.y][_pos.x - 1];
+    if (_pos.y + 1 < _map->getWidth())
+        st.member.down = (int) _map->accessGrid()[_pos.y][_pos.x + 1];
+    return st;
 }

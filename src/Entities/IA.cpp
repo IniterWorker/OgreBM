@@ -9,9 +9,8 @@
 
 #include "Entities/IA.hpp"
 
-IA::IA(Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath, int id) : Body(sceneManager,
-                                                                                                        name, id),
-                                                                                                   _pLua(nullptr) {
+IA::IA(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath, int id)
+        : Body(map, sceneManager, name, id), _pLua(nullptr), timer(0) {
     if (!loadIA(scriptPath))
         _pLua = nullptr;
 }
@@ -51,7 +50,33 @@ bool IA::loadIA(const std::string &path) {
 void IA::update(Ogre::Real elapsedTime) {
     Body::update(elapsedTime);
 
+    timer += elapsedTime;
 
+    if (timer > 1.0f) {
+        timer = 0;
+        CaseSearch st;
+
+        st = lookFast();
+
+        bool action = false;
+        for (int i = 0; i < 4; ++i) {
+            switch ((Map::Bloc)st.data[i]) {
+                case Map::Bloc::EMPTY:break;
+                case Map::Bloc::WALL:break;
+                case Map::Bloc::EXPLOSION:break;
+                case Map::Bloc::BREAKABLE:
+                    setWantBomb(true);
+                    action = true;
+                    break;
+            }
+            if (action) {
+                break;
+            }
+        }
+
+        if (!action)
+            setDir({(rand() % 2) ? -1 : 1, (rand() % 2) ? -1 : 1});
+    }
 }
 
 IA::~IA() {

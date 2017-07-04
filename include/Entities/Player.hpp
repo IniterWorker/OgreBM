@@ -17,7 +17,7 @@
 class Player : public Body, public OIS::KeyListener {
 public:
 
-  Player(Ogre::SceneManager *sceneManager, const std::string &name, int id);
+  Player(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, int id);
 
     bool keyPressed(const OIS::KeyEvent &arg) override;
 

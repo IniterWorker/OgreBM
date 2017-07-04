@@ -9,7 +9,8 @@
 
 #include "Entities/Player.hpp"
 
-Player::Player(Ogre::SceneManager *sceneManager, const std::string &name, int id) : Body(sceneManager, name, id) {}
+Player::Player(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, int id)
+        : Body(map, sceneManager, name, id) {}
 
 bool Player::keyPressed(const OIS::KeyEvent &arg) {
     switch (arg.key) {

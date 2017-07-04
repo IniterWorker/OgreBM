@@ -23,7 +23,7 @@ extern "C" {
 
 class IA : public Body {
 public:
-  IA(Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath, int id);
+  IA(Map *map, Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath, int id);
 
     virtual ~IA();
 
@@ -40,6 +40,8 @@ private:
     void RegisterIAWithLua(lua_State *pLua);
 
     lua_State *_pLua;
+
+    Ogre::Real timer;
 };
 
 

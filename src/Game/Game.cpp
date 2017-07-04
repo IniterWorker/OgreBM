@@ -115,7 +115,7 @@ void Game::addPlayer(Player *player) {
 }
 
 void Game::addIA(const std::string &name, const std::string &scriptPath) {
-  IA *bot = new IA(_sceneManager, name, scriptPath, _vPlayers.size());
+  IA *bot = new IA(_map, _sceneManager, name, scriptPath, _vPlayers.size());
     _vPlayers.push_back(static_cast<Body *>(bot));
     _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
     _vPlayers.back()->setPos(_map->getStartPos(_vPlayers.size() - 1));
