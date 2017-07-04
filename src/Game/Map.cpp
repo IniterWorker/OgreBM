@@ -7,6 +7,8 @@ const std::map<Map::Bloc, std::string>      Map::p_blocMesh = {
 };
 
 Map::Map(Ogre::SceneManager *mgr, size_t width, size_t height, float density):
+  p_height(height),
+  p_width(width),
   p_explosionCooldownTime(0.5)
 {
   p_mgr = mgr;
@@ -251,4 +253,12 @@ void    Map::update(float elapsedTime)
       }
     }
   }
+}
+
+size_t Map::getHeight(void) const {
+  return p_height;
+}
+
+size_t Map::getWidth(void) const {
+  return p_width;
 }

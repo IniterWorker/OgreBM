@@ -36,53 +36,64 @@ void Game::update(Ogre::Real elapsedTime) {
     }
     _mvCooldown -= elapsedTime;
     for (auto it = _vPlayers.begin(); it != _vPlayers.end(); ++it) {
-        (*it)->update(elapsedTime);
-        if (_mvCooldown <= 0 && (*it)->getLastAction(action)) {
-            // execute action
-          _mvCooldown = 0.15;
-            auto move = (*it)->getNodeRoot()->getPosition();
-            Ogre::Vector2 pos = (*it)->getPos();
-            switch (action) {
-            case InputController::ActionPlayer::GO_UP:
-              move.x -= _map->getBlocDim().x;
-              pos.x--;
-              (*it)->getNodeRoot()->resetOrientation();
-              (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI / 2));
-              break;
-            case InputController::ActionPlayer::GO_DOWN:
-              move.x += _map->getBlocDim().x;
-              pos.x++;
-              (*it)->getNodeRoot()->resetOrientation();
-              (*it)->getNodeRoot()->yaw(Ogre::Radian(M_PI / 2));
-              break;
-            case InputController::ActionPlayer::GO_RIGHT:
-              move.z += _map->getBlocDim().z;
-              pos.y++;
-              (*it)->getNodeRoot()->resetOrientation();
-              break;
-            case InputController::ActionPlayer::GO_LEFT:
-              move.z -= _map->getBlocDim().z;
-              pos.y--;
-              (*it)->getNodeRoot()->resetOrientation();
-              (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI));
-              break;
-            case InputController::ActionPlayer::PUT_BOMB:
-              Bomb *newBomb;
-              if ((newBomb = (*it)->putNewBomb(_sceneManager, pos, *_map)))
+        // (*it)->update(elapsedTime);
+        auto move = (*it)->getNodeRoot()->getPosition();
+        const Ogre::Vector2 dir = (*it)->getDir();
+        const Ogre::Real speed = (*it)->getSpeed();
+
+        if (dir == Ogre::Vector2::ZERO)
+            continue;
+
+        int posX = (int) (((move.x + _map->getBlocDim().x / 2) / _map->getBlocDim().x));
+        int posY = (int) (((move.z + _map->getBlocDim().z / 2) / _map->getBlocDim().z));
+
+        if (dir.x < 0) {
+            move.x -= speed * elapsedTime;
+            (*it)->getNodeRoot()->resetOrientation();
+            (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI / 2));
+        }
+        if (dir.x > 0) {
+            move.x += speed * elapsedTime;
+            (*it)->getNodeRoot()->resetOrientation();
+            (*it)->getNodeRoot()->yaw(Ogre::Radian(M_PI / 2));
+        }
+        if (dir.y > 0) {
+            move.z += speed * elapsedTime;
+            (*it)->getNodeRoot()->resetOrientation();
+        }
+        if (dir.y < 0) {
+            move.z -= speed * elapsedTime;
+            (*it)->getNodeRoot()->resetOrientation();
+            (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI));
+        }
+        if ((*it)->getWantBomb()) {
+            Bomb *newBomb;
+            if ((newBomb = (*it)->putNewBomb(_sceneManager, {posX, posY}, *_map)))
                 _vBombs.push_back(newBomb);
+            (*it)->setWantBomb(false);
+        }
+
+        posX = (int) (((move.x + _map->getBlocDim().x / 2) / _map->getBlocDim().x));
+        posY = (int) (((move.z + _map->getBlocDim().z / 2) / _map->getBlocDim().z));
+
+        std::cout << "posX : " << posX << " posY " << posY << std::endl;
+
+        bool isOnBomb = false;
+        for (auto i = _vBombs.begin() ; i != _vBombs.end() ; ++i) {
+          if (posX == (*i)->getPos().x
+              && posX == (*i)->getPos().y
+              && (*it)->getPos().x != posX
+              && (*it)->getPos().y != posY) {
+              isOnBomb = true;
               break;
-            default:
-              break;
-            }
-            bool      isOnBomb = false;
-            for (auto i = _vBombs.begin() ; i != _vBombs.end() ; ++i) {
-              if (pos == (*i)->getPos() && (*it)->getPos() != pos)
-                isOnBomb = true;
-            }
-            if (_map->accessGrid()[pos.y][pos.x] == Map::Bloc::EMPTY && !isOnBomb) {
-              (*it)->getPos() = pos;
-              (*it)->getNodeRoot()->setPosition(move);
-            }
+          }
+        }
+
+        if (!isOnBomb && posX > 0 && posY > 0
+            && posY < _map->getHeight() && posX < _map->getWidth()
+            && _map->accessGrid()[posY][posX] == Map::Bloc::EMPTY) {
+          (*it)->setPos({posX, posY});
+          (*it)->getNodeRoot()->setPosition(move);
         }
     }
 
@@ -100,12 +111,12 @@ std::vector<Body *> &Game::getPlayers() {
 void Game::addPlayer(Player *player) {
     _vPlayers.push_back(static_cast<Body *>(player));
     _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
-    _vPlayers.back()->getPos() = _map->getStartPos(_vPlayers.size() - 1);
+    _vPlayers.back()->setPos(_map->getStartPos(_vPlayers.size() - 1));
 }
 
 void Game::addIA(const std::string &name, const std::string &scriptPath) {
     IA *bot = new IA(_sceneManager, name, scriptPath);
     _vPlayers.push_back(static_cast<Body *>(bot));
     _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
-    _vPlayers.back()->getPos() = _map->getStartPos(_vPlayers.size() - 1);
+    _vPlayers.back()->setPos(_map->getStartPos(_vPlayers.size() - 1));
 }

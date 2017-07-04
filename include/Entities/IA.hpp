@@ -32,9 +32,7 @@ public:
     int getX() const;
 
     int getY() const;
-
-    bool getLastAction(ActionPlayer &action) override;
-
+    
 private:
 
     bool loadIA(const std::string &path);

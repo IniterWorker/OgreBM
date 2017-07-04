@@ -22,9 +22,6 @@ public:
     bool keyPressed(const OIS::KeyEvent &arg) override;
 
     bool keyReleased(const OIS::KeyEvent &arg) override;
-
-private:
-    ActionPlayer _lastKey;
 };
 
 #endif //OGREBM_PLAYER_HPP

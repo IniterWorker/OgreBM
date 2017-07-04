@@ -12,28 +12,40 @@
 Player::Player(Ogre::SceneManager *sceneManager, const std::string &name) : Body(sceneManager, name) {}
 
 bool Player::keyPressed(const OIS::KeyEvent &arg) {
-  switch (arg.key) {
-  case OIS::KC_UP:
-    moveUp();
-    break;
-  case OIS::KC_DOWN:
-    moveDown();
-    break;
-  case OIS::KC_LEFT:
-    moveRight();
-    break;
-  case OIS::KC_RIGHT:
-    moveLeft();
-    break;
-  case OIS::KC_SPACE:
-    putBomb();
-    break;
-  }
-  return false;
+    switch (arg.key) {
+        case OIS::KC_UP:
+            _dir.x = -1;
+            break;
+        case OIS::KC_DOWN:
+            _dir.x = 1;
+            break;
+        case OIS::KC_LEFT:
+            _dir.y = 1;
+            break;
+        case OIS::KC_RIGHT:
+            _dir.y = -1;
+            break;
+        case OIS::KC_SPACE:
+            setWantBomb(true);
+            break;
+    }
+    return false;
 }
 
 bool Player::keyReleased(const OIS::KeyEvent &arg) {
-    if (_qInput.size())
-        _qInput.pop();
+    switch (arg.key) {
+        case OIS::KC_UP:
+            _dir.x = 0;
+            break;
+        case OIS::KC_DOWN:
+            _dir.x = 0;
+            break;
+        case OIS::KC_LEFT:
+            _dir.y = 0;
+            break;
+        case OIS::KC_RIGHT:
+            _dir.y = 0;
+            break;
+    }
     return false;
 }

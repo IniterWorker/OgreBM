@@ -20,20 +20,24 @@
 #include <Game/InputController.hpp>
 
 class Bomb;
+
 class Map;
 
-class Body : public InputController {
+class Body {
 protected:
-  int           _bombPower;
-  int           _maxBombs;
-  std::vector<Bomb*>    _bombs;
+    int _bombPower;
+    int _maxBombs;
+    bool _wantBomb;
+    std::vector<Bomb *> _bombs;
     std::string _name;
     Ogre::SceneNode *_nodeRoot;
     Ogre::SceneNode *_nodeHead;
     Ogre::SceneNode *_nodeBody;
     Ogre::Entity *_entityHead;
     Ogre::Entity *_entityBody;
-  Ogre::Vector2 _pos;
+    Ogre::Vector2 _pos;
+    Ogre::Vector2 _dir;
+    Ogre::Real _speed;
 public:
     Body(Ogre::SceneManager *sceneManager, const std::string &name);
 
@@ -43,11 +47,27 @@ public:
 
     Ogre::SceneNode *getNodeRoot();
 
-  Ogre::Vector2&        getPos(void);
+    Bomb *putNewBomb(Ogre::SceneManager *, const Ogre::Vector2 &, const Map &);
 
-  Bomb  *putNewBomb(Ogre::SceneManager*, const Ogre::Vector2&, const Map&);
-  void  removeBomb(void);
-  void  receiveExplosion(void);
+    void removeBomb(void);
+
+    void receiveExplosion(void);
+
+    const Ogre::Vector2 &getPos() const;
+
+    void setPos(const Ogre::Vector2 &_pos);
+
+    const Ogre::Vector2 &getDir() const;
+
+    void setDir(const Ogre::Vector2 &_dir);
+
+    Ogre::Real getSpeed() const;
+
+    void setSpeed(Ogre::Real _speed);
+
+    void setWantBomb(bool value);
+
+    bool getWantBomb() const;
 };
 
 

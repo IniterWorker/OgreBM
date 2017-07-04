@@ -9,7 +9,11 @@
 
 #include "Entities/Body.hpp"
 
-Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(name), _bombPower(1), _maxBombs(1)
+Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(name), _bombPower(1), _maxBombs(1),
+                                                                        _pos(Ogre::Vector2::ZERO),
+                                                                        _dir(Ogre::Vector2::ZERO),
+                                                                        _speed(100),
+                                                                        _wantBomb(false)
 {
     if (sceneManager == nullptr)
         throw std::runtime_error("Player Manager Error");
@@ -33,11 +37,6 @@ void Body::update(Ogre::Real elapsedTime) {
 
 Ogre::SceneNode *Body::getNodeRoot() {
     return _nodeRoot;
-}
-
-Ogre::Vector2&    Body::getPos(void)
-{
-  return (_pos);
 }
 
 Bomb*   Body::putNewBomb(Ogre::SceneManager* mgr, const Ogre::Vector2& pos, const Map& map)
@@ -64,4 +63,36 @@ void  Body::receiveExplosion(void)
 {
   //player die or something like that ...
   std::cerr << "AH !" << std::endl;
+}
+
+const Ogre::Vector2 &Body::getPos() const {
+    return _pos;
+}
+
+void Body::setPos(const Ogre::Vector2 &_pos) {
+    Body::_pos = _pos;
+}
+
+const Ogre::Vector2 &Body::getDir() const {
+    return _dir;
+}
+
+void Body::setDir(const Ogre::Vector2 &_dir) {
+    Body::_dir = _dir;
+}
+
+Ogre::Real Body::getSpeed() const {
+    return _speed;
+}
+
+void Body::setSpeed(Ogre::Real _speed) {
+    Body::_speed = _speed;
+}
+
+void Body::setWantBomb(bool value) {
+    _wantBomb = value;
+}
+
+bool Body::getWantBomb() const {
+    return _wantBomb;
 }

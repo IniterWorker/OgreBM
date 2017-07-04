@@ -51,40 +51,10 @@ bool IA::loadIA(const std::string &path) {
 void IA::update(Ogre::Real elapsedTime) {
     Body::update(elapsedTime);
 
-    if (_pLua)
-    {
-        int value = luabind::call_function<int>(_pLua, "run");
-        switch ((ActionPlayer)value) {
-            case ActionPlayer::GO_UP:
-                moveUp();
-                break;
-            case ActionPlayer::GO_DOWN:
-                moveDown();
-                break;
-            case ActionPlayer::GO_LEFT:
-                moveLeft();
-                break;
-            case ActionPlayer::GO_RIGHT:
-                moveRight();
-                break;
-            case ActionPlayer::PUT_BOMB:
-                putBomb();
-                break;
-            case ActionPlayer::HIT_BOMB:
-                hitBomb();
-                break;
-        }
-    }
+
 }
 
 IA::~IA() {
     if (_pLua)
         lua_close(_pLua);
-}
-
-bool IA::getLastAction(InputController::ActionPlayer &action) {
-    const bool ret = InputController::getLastAction(action);
-    if (_qInput.size())
-        _qInput.pop();
-    return ret;
 }

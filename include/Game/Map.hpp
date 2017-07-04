@@ -16,66 +16,80 @@
 # include "Entities/Bomb.hpp"
 
 class Bomb;
+
 class Body;
 
-class   Map
-{
+class Map {
 
 public:
 
-  enum class Bloc {
-    EMPTY,
-    WALL,
-    EXPLOSION,
-    BREAKABLE
-  };
+    enum class Bloc {
+        EMPTY,
+        WALL,
+        EXPLOSION,
+        BREAKABLE
+    };
 
-  typedef std::vector<std::vector<Bloc>>        Grid;
+    typedef std::vector<std::vector<Bloc>> Grid;
 
-  Map(Ogre::SceneManager *mgr, size_t width = 21, size_t height = 21, float density = 0.8f);
-  ~Map(void);
+    Map(Ogre::SceneManager *mgr, size_t width = 21, size_t height = 21, float density = 0.8f);
 
-  void  makeExplosion(const Ogre::Vector2&, int power, const std::vector<Bomb*>&, const std::vector<Body*>& players);
-  void  generateMap(size_t width, size_t height, float density);
+    ~Map(void);
 
-  const Ogre::Vector3&  getMapDim(void) const;
+    void
+    makeExplosion(const Ogre::Vector2 &, int power, const std::vector<Bomb *> &, const std::vector<Body *> &players);
 
-  const Ogre::Vector3&  getBlocDim(void) const;
+    void generateMap(size_t width, size_t height, float density);
 
-  const Grid&   accessGrid(void) const;
+    const Ogre::Vector3 &getMapDim(void) const;
 
-  Ogre::SceneNode *getNodeRoot();
+    const Ogre::Vector3 &getBlocDim(void) const;
 
-  const Ogre::Vector3&  getStartEmplacement(int nb) const;
-  const Ogre::Vector2&  getStartPos(int nb) const;
-  void  update(float elapsedTime);
+    const Grid &accessGrid(void) const;
+
+    Ogre::SceneNode *getNodeRoot();
+
+    const Ogre::Vector3 &getStartEmplacement(int nb) const;
+
+    const Ogre::Vector2 &getStartPos(int nb) const;
+
+    void update(float elapsedTime);
+
+    size_t getHeight(void) const;
+
+    size_t getWidth(void) const;
 
 private:
 
-  void  p_destroyCase(const Ogre::Vector2&, bool = false);
-  void  p_createCase(const Ogre::Vector2&, Bloc, bool begin = true);
-  void  p_clearMap(void);
+    void p_destroyCase(const Ogre::Vector2 &, bool = false);
 
-  Grid  p_grid;
+    void p_createCase(const Ogre::Vector2 &, Bloc, bool begin = true);
 
-  std::vector<std::vector<Ogre::SceneNode*>>  p_drawMap;
-  std::vector<std::vector<Ogre::SceneNode*>>  p_subPlane;
+    void p_clearMap(void);
 
-  std::vector<std::vector<float>>  p_explosionCooldown;
+    Grid p_grid;
 
-  std::array<Ogre::Vector3, 4>    p_startEmplacements;
-  std::array<Ogre::Vector2, 4>    p_startPos;
+    size_t p_height;
+    size_t p_width;
 
-  Ogre::SceneNode*    p_base;
+    std::vector<std::vector<Ogre::SceneNode *>> p_drawMap;
+    std::vector<std::vector<Ogre::SceneNode *>> p_subPlane;
 
-  Ogre::SceneManager    *p_mgr;
+    std::vector<std::vector<float>> p_explosionCooldown;
 
-  Ogre::Vector3 p_dim;
-  Ogre::Vector3 p_blocDim;
+    std::array<Ogre::Vector3, 4> p_startEmplacements;
+    std::array<Ogre::Vector2, 4> p_startPos;
 
-  const float   p_explosionCooldownTime;
+    Ogre::SceneNode *p_base;
 
-  static const std::map<Bloc, std::string>      p_blocMesh;
+    Ogre::SceneManager *p_mgr;
+
+    Ogre::Vector3 p_dim;
+    Ogre::Vector3 p_blocDim;
+
+    const float p_explosionCooldownTime;
+
+    static const std::map<Bloc, std::string> p_blocMesh;
 
 };
 
