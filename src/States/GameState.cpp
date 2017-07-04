@@ -41,7 +41,7 @@ void GameState::createScene() {
     // Map
     Map *map = _game->getMap();
 
-    _player = new Player(_sceneManager, "MyPlayer");
+    _player = new Player(_sceneManager, "MyPlayer", 0);
     InputManager::getSingletonPtr()->addKeyListener(_player, "MyPlayerKeyboard");
 
     _game->addPlayer(_player);

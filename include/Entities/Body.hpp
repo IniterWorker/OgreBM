@@ -18,6 +18,7 @@
 # include "Entities/Bomb.hpp"
 # include <OgreVector2.h>
 #include <Game/InputController.hpp>
+# include <array>
 
 class Bomb;
 class Map;
@@ -34,8 +35,10 @@ protected:
     Ogre::Entity *_entityHead;
     Ogre::Entity *_entityBody;
   Ogre::Vector2 _pos;
+
+  static const std::array<std::string, 4>      _meshPlayers;
 public:
-    Body(Ogre::SceneManager *sceneManager, const std::string &name);
+  Body(Ogre::SceneManager *sceneManager, const std::string &name, int id);
 
     virtual ~Body();
 

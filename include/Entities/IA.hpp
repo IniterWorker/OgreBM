@@ -23,7 +23,7 @@ extern "C" {
 
 class IA : public Body {
 public:
-    IA(Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath);
+  IA(Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath, int id);
 
     virtual ~IA();
 

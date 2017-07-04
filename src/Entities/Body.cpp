@@ -9,7 +9,14 @@
 
 #include "Entities/Body.hpp"
 
-Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(name), _bombPower(1), _maxBombs(1)
+const std::array<std::string, 4>      Body::_meshPlayers = {
+  "Sinbad_green.mesh",
+  "Sinbad_yellow.mesh",
+  "Sinbad_blue.mesh",
+  "Sinbad_red.mesh"
+};
+
+Body::Body(Ogre::SceneManager *sceneManager, const std::string &name, int id) : _name(name), _bombPower(1), _maxBombs(1)
 {
     if (sceneManager == nullptr)
         throw std::runtime_error("Player Manager Error");
@@ -18,7 +25,7 @@ Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(na
     _nodeBody = _nodeRoot->createChildSceneNode(name + "_body");
     _nodeHead = _nodeRoot->createChildSceneNode(name + "_head");
 
-    _entityBody = sceneManager->createEntity("Sinbad_green.mesh");
+    _entityBody = sceneManager->createEntity(_meshPlayers[id]);
 
     _nodeBody->attachObject(_entityBody);
     _nodeBody->setScale(Ogre::Vector3(3, 4, 3));

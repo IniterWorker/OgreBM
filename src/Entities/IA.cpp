@@ -9,8 +9,8 @@
 
 #include "Entities/IA.hpp"
 
-IA::IA(Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath) : Body(sceneManager,
-                                                                                                        name),
+IA::IA(Ogre::SceneManager *sceneManager, const std::string &name, const std::string &scriptPath, int id) : Body(sceneManager,
+                                                                                                        name, id),
                                                                                                    _pLua(nullptr) {
     if (!loadIA(scriptPath))
         _pLua = nullptr;
