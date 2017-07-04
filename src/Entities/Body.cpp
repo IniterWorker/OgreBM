@@ -35,6 +35,11 @@ Ogre::SceneNode *Body::getNodeRoot() {
     return _nodeRoot;
 }
 
+Ogre::Vector2&    Body::getPos(void)
+{
+  return (_pos);
+}
+
 Bomb*   Body::putNewBomb(Ogre::SceneManager* mgr, const Ogre::Vector2& pos, const Map& map)
 {
   Bomb  *newBomb = nullptr;

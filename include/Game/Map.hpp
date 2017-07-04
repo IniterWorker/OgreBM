@@ -42,6 +42,7 @@ public:
   Ogre::SceneNode *getNodeRoot();
 
   const Ogre::Vector3&  getStartEmplacement(int nb) const;
+  const Ogre::Vector2&  getStartPos(int nb) const;
 
 private:
 
@@ -55,6 +56,7 @@ private:
   std::vector<std::vector<Ogre::SceneNode*>>  p_subPlane;
 
   std::array<Ogre::Vector3, 4>    p_startEmplacements;
+  std::array<Ogre::Vector2, 4>    p_startPos;
 
   Ogre::SceneNode*    p_base;
 

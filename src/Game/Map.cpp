@@ -145,14 +145,19 @@ void    Map::generateMap(size_t width, size_t height, float density)
       } else if (rand() % 100 >= density * 100 ||
                  ((j <= 2 || j >= width - 3) &&
                   (i <= 2 || i >= height - 3))) {
-        if (j <= 2 && i <= 2 && p_startEmplacements[1] == Ogre::Vector3::ZERO)
+        if (j <= 2 && i <= 2 && p_startEmplacements[1] == Ogre::Vector3::ZERO) {
           p_startEmplacements[1] = p_drawMap[i][j]->getPosition();
-        else if (j <= 2 && i >= height - 3 && p_startEmplacements[0] == Ogre::Vector3::ZERO)
+          p_startPos[1] = Ogre::Vector2(j, i);
+        } else if (j <= 2 && i >= height - 3 && p_startEmplacements[0] == Ogre::Vector3::ZERO) {
           p_startEmplacements[0] = p_drawMap[i][j]->getPosition();
-        else if (j >= width - 3 && i <= 2 && p_startEmplacements[2] == Ogre::Vector3::ZERO)
+          p_startPos[0] = Ogre::Vector2(j, i);
+        } else if (j >= width - 3 && i <= 2 && p_startEmplacements[2] == Ogre::Vector3::ZERO) {
           p_startEmplacements[2] = p_drawMap[i][j]->getPosition();
-        else if (j >= width - 3 && i >= height - 3 && p_startEmplacements[3] == Ogre::Vector3::ZERO)
+          p_startPos[2] = Ogre::Vector2(j, i);
+        } else if (j >= width - 3 && i >= height - 3 && p_startEmplacements[3] == Ogre::Vector3::ZERO) {
           p_startEmplacements[3] = p_drawMap[i][j]->getPosition();
+          p_startPos[3] = Ogre::Vector2(j, i);
+        }
         p_grid[i][j] = Map::Bloc::EMPTY;
       } else {
         p_grid[i][j] = Map::Bloc::BREAKABLE;
@@ -170,4 +175,9 @@ Ogre::SceneNode *Map::getNodeRoot() {
 const Ogre::Vector3&    Map::getStartEmplacement(int id) const
 {
   return (p_startEmplacements[id]);
+}
+
+const Ogre::Vector2&    Map::getStartPos(int id) const
+{
+  return (p_startPos[id]);
 }

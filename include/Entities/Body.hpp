@@ -32,6 +32,7 @@ protected:
     Ogre::SceneNode *_nodeBody;
     Ogre::Entity *_entityHead;
     Ogre::Entity *_entityBody;
+  Ogre::Vector2 _pos;
 public:
     Body(Ogre::SceneManager *sceneManager, const std::string &name);
 
@@ -40,6 +41,8 @@ public:
     virtual void update(Ogre::Real elapsedTime);
 
     Ogre::SceneNode *getNodeRoot();
+
+  Ogre::Vector2&        getPos(void);
 
   Bomb  *putNewBomb(Ogre::SceneManager*, const Ogre::Vector2&, const Map&);
   void  removeBomb(void);

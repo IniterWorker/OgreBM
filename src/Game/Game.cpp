@@ -36,37 +36,43 @@ void Game::update(Ogre::Real elapsedTime) {
         if ((*it)->getLastAction(action)) {
             // execute action
             auto move = (*it)->getNodeRoot()->getPosition();
+            Ogre::Vector2 pos = (*it)->getPos();
             switch (action) {
             case InputController::ActionPlayer::GO_UP:
               move.x -= _map->getBlocDim().x;
+              pos.x--;
               (*it)->getNodeRoot()->resetOrientation();
               (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI / 2));
               break;
             case InputController::ActionPlayer::GO_DOWN:
               move.x += _map->getBlocDim().x;
+              pos.x++;
               (*it)->getNodeRoot()->resetOrientation();
               (*it)->getNodeRoot()->yaw(Ogre::Radian(M_PI / 2));
               break;
             case InputController::ActionPlayer::GO_RIGHT:
               move.z += _map->getBlocDim().z;
+              pos.y++;
               (*it)->getNodeRoot()->resetOrientation();
               break;
             case InputController::ActionPlayer::GO_LEFT:
               move.z -= _map->getBlocDim().z;
+              pos.y--;
               (*it)->getNodeRoot()->resetOrientation();
               (*it)->getNodeRoot()->yaw(Ogre::Radian(-M_PI));
               break;
             case InputController::ActionPlayer::PUT_BOMB:
               Bomb *newBomb;
-              if ((newBomb = (*it)->putNewBomb(_sceneManager, Ogre::Vector2(move.x / _map->getBlocDim().x,
-                                                                            move.z / _map->getBlocDim().z), *_map)))
+              if ((newBomb = (*it)->putNewBomb(_sceneManager, pos, *_map)))
                 _vBombs.push_back(newBomb);
               break;
             default:
               break;
             }
-            if (_map->accessGrid()[move.z / _map->getBlocDim().z][move.x / _map->getBlocDim().x] == Map::Bloc::EMPTY)
+            if (_map->accessGrid()[pos.y][pos.x] == Map::Bloc::EMPTY) {
+              (*it)->getPos() = pos;
               (*it)->getNodeRoot()->setPosition(move);
+            }
         }
     }
 
@@ -84,4 +90,5 @@ std::vector<Body *> &Game::getPlayers() {
 void Game::addPlayer(Player *player) {
     _vPlayers.push_back(static_cast<Body *>(player));
     _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
+    _vPlayers.back()->getPos() = _map->getStartPos(_vPlayers.size() - 1);
 }
