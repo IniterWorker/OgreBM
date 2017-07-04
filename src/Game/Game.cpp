@@ -25,7 +25,7 @@ void Game::update(Ogre::Real elapsedTime) {
     // Inject elapsedTime in all players
     InputController::ActionPlayer action;
     for (auto i = _vBombs.begin() ; i != _vBombs.end() ; ++i) {
-      if ((*i)->update(elapsedTime, *_map)) {
+      if ((*i)->update(elapsedTime, *_map, _vBombs, _vPlayers)) {
         delete (*i);
         _vBombs.erase(i);
         break;
@@ -69,7 +69,12 @@ void Game::update(Ogre::Real elapsedTime) {
             default:
               break;
             }
-            if (_map->accessGrid()[pos.y][pos.x] == Map::Bloc::EMPTY) {
+            bool      isOnBomb = false;
+            for (auto i = _vBombs.begin() ; i != _vBombs.end() ; ++i) {
+              if (pos == (*i)->getPos() && (*it)->getPos() != pos)
+                isOnBomb = true;
+            }
+            if (_map->accessGrid()[pos.y][pos.x] == Map::Bloc::EMPTY && !isOnBomb) {
               (*it)->getPos() = pos;
               (*it)->getNodeRoot()->setPosition(move);
             }

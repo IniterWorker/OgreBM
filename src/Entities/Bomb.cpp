@@ -16,6 +16,7 @@ Bomb::Bomb(Ogre::SceneManager *mgr, const Ogre::Vector2& pos, const Map& map, in
   p_mgr = mgr;
   p_power = power;
   p_father = father;
+  p_mustExplode = false;
 }
 
 Bomb::~Bomb(void)
@@ -29,7 +30,7 @@ Bomb::~Bomb(void)
   p_mgr->destroySceneNode(p_node);
 }
 
-bool  Bomb::update(float elapsedTime, Map& map)
+bool  Bomb::update(float elapsedTime, Map& map, const std::vector<Bomb*>& bombs, const std::vector<Body*>& players)
 {
   p_cooldown -= elapsedTime;
   if ((int)(p_cooldown * 10) % 2) {
@@ -45,10 +46,20 @@ bool  Bomb::update(float elapsedTime, Map& map)
     } catch (std::exception) {}
     p_node->setScale(Ogre::Vector3(2, 2, 2));
   }
-  if (p_cooldown <= 0) {
-    map.makeExplosion(p_pos, p_power);
+  if (p_cooldown <= 0 || p_mustExplode) {
+    map.makeExplosion(p_pos, p_power, bombs, players);
     p_father->removeBomb();
     return (true);
   }
   return (false);
+}
+
+const Ogre::Vector2&  Bomb::getPos(void) const
+{
+  return (p_pos);
+}
+
+void    Bomb::mustExplode(void)
+{
+  p_mustExplode = true;
 }

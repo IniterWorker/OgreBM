@@ -45,6 +45,10 @@ Bomb*   Body::putNewBomb(Ogre::SceneManager* mgr, const Ogre::Vector2& pos, cons
   Bomb  *newBomb = nullptr;
 
   if (_bombs.size() < _maxBombs) {
+    for (auto i = _bombs.begin() ; i != _bombs.end() ; ++i) {
+      if ((*i)->getPos() == pos)
+        return (nullptr);
+    }
     newBomb = new Bomb(mgr, pos, map, _bombPower, this);
     _bombs.push_back(newBomb);
   }
@@ -54,4 +58,10 @@ Bomb*   Body::putNewBomb(Ogre::SceneManager* mgr, const Ogre::Vector2& pos, cons
 void    Body::removeBomb(void)
 {
   _bombs.erase(_bombs.begin());
+}
+
+void  Body::receiveExplosion(void)
+{
+  //player die or something like that ...
+  std::cerr << "AH !" << std::endl;
 }

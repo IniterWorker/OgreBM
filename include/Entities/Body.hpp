@@ -20,6 +20,7 @@
 #include <Game/InputController.hpp>
 
 class Bomb;
+class Map;
 
 class Body : public InputController {
 protected:
@@ -46,6 +47,7 @@ public:
 
   Bomb  *putNewBomb(Ogre::SceneManager*, const Ogre::Vector2&, const Map&);
   void  removeBomb(void);
+  void  receiveExplosion(void);
 };
 
 

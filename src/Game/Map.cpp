@@ -77,37 +77,72 @@ void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType)
     p_drawMap[pos.y][pos.x]->attachObject(p_mgr->createEntity(os.str(), p_blocMesh.at(blocType)));
 }
 
-void    Map::makeExplosion(const Ogre::Vector2& pos, int power)
+void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vector<Bomb*>& bombs, const std::vector<Body*>& players)
 {
-
-  for (int i = 1 ; i <= power ; ++i)
+  for (int i = 1 ; i <= power ; ++i) {
+    for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y + i))
+        (*j)->mustExplode();
+    }
+    for (auto j = players.begin() ; j != players.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y + i))
+        (*j)->receiveExplosion();
+    }
     if (p_grid[pos.y + i][pos.x] == Map::Bloc::WALL)
       break;
     else if (p_grid[pos.y + i][pos.x] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x, pos.y + i));
       break;
     }
-  for (int i = 1 ; i <= power ; ++i)
+  }
+  for (int i = 1 ; i <= power ; ++i) {
+    for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y - i))
+        (*j)->mustExplode();
+    }
+    for (auto j = players.begin() ; j != players.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y - i))
+        (*j)->receiveExplosion();
+    }
     if (p_grid[pos.y - i][pos.x] == Map::Bloc::WALL)
       break;
     else if (p_grid[pos.y - i][pos.x] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x, pos.y - i));
       break;
     }
-  for (int i = 1 ; i <= power ; ++i)
+  }
+  for (int i = 1 ; i <= power ; ++i) {
+    for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x + i, pos.y))
+        (*j)->mustExplode();
+    }
+    for (auto j = players.begin() ; j != players.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x + i, pos.y))
+        (*j)->receiveExplosion();
+    }
     if (p_grid[pos.y][pos.x + i] == Map::Bloc::WALL)
       break;
     else if (p_grid[pos.y][pos.x + i] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x + i, pos.y));
       break;
     }
-  for (int i = 1 ; i <= power ; ++i)
+  }
+  for (int i = 1 ; i <= power ; ++i) {
+    for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x - i, pos.y))
+        (*j)->mustExplode();
+    }
+    for (auto j = players.begin() ; j != players.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x - i, pos.y))
+        (*j)->receiveExplosion();
+    }
     if (p_grid[pos.y][pos.x - i] == Map::Bloc::WALL)
       break;
     else if (p_grid[pos.y][pos.x - i] == Map::Bloc::BREAKABLE) {
       p_destroyCase(Ogre::Vector2(pos.x - i, pos.y));
       break;
     }
+  }
 }
 
 const Ogre::Vector3&  Map::getMapDim(void) const

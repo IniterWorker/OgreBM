@@ -13,6 +13,10 @@
 # include <string>
 # include <cstdlib>
 # include <array>
+# include "Entities/Bomb.hpp"
+
+class Bomb;
+class Body;
 
 class   Map
 {
@@ -30,7 +34,7 @@ public:
   Map(Ogre::SceneManager *mgr, size_t width = 21, size_t height = 21, float density = 0.8f);
   ~Map(void);
 
-  void  makeExplosion(const Ogre::Vector2&, int power);
+  void  makeExplosion(const Ogre::Vector2&, int power, const std::vector<Bomb*>&, const std::vector<Body*>& players);
   void  generateMap(size_t width, size_t height, float density);
 
   const Ogre::Vector3&  getMapDim(void) const;
