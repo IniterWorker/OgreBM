@@ -86,6 +86,10 @@ void    Map::p_createCase(const Ogre::Vector2& pos, Bloc blocType, bool begin)
 void    Map::makeExplosion(const Ogre::Vector2& pos, int power, const std::vector<Bomb*>& bombs, const std::vector<Body*>& players)
 {
   p_explosionCooldown[pos.y][pos.x] = p_explosionCooldownTime;
+    for (auto j = players.begin() ; j != players.end() ; ++j) {
+      if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y))
+        (*j)->receiveExplosion();
+    }
   for (int i = 1 ; i <= power ; ++i) {
     for (auto j = bombs.begin() ; j != bombs.end() ; ++j) {
       if ((*j)->getPos() == Ogre::Vector2(pos.x, pos.y + i))

@@ -18,6 +18,7 @@
 # include "Entities/Bomb.hpp"
 # include <OgreVector2.h>
 #include <Game/InputController.hpp>
+# include <array>
 
 class Bomb;
 
@@ -38,8 +39,13 @@ protected:
     Ogre::Vector2 _pos;
     Ogre::Vector2 _dir;
     Ogre::Real _speed;
+
+    static const std::array<std::string, 4> _meshPlayers;
+
+    bool _alive;
+
 public:
-    Body(Ogre::SceneManager *sceneManager, const std::string &name);
+    Body(Ogre::SceneManager *sceneManager, const std::string &name, int id);
 
     virtual ~Body();
 
@@ -68,6 +74,8 @@ public:
     void setWantBomb(bool value);
 
     bool getWantBomb() const;
+
+    bool isAlive(void) const;
 };
 
 

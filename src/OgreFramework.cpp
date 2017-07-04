@@ -53,6 +53,7 @@ void OgreFramework::_initResourcesConfiguration() {
     }
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Splash");
+    Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Lose");
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Essential");
     Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing Resources Completed ***");
 }

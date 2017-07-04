@@ -1,25 +1,16 @@
-//
-//-----------------------------------------------------------------------------
-//Filename:    SplashState.cpp
-//-----------------------------------------------------------------------------
-//
-// Created by bonett_w on 7/3/17.
-//-----------------------------------------------------------------------------
-//
-
 #include "OgreFramework.hpp"
-#include "States/SplashState.hpp"
+#include "States/LoseState.hpp"
 
-SplashState::SplashState() : _firstLoad(false), _isQuit(false), _time(0), _awaitingTime(2) {
+LoseState::LoseState() : _isQuit(false), _time(0), _awaitingTime(2) {
 
 }
 
-void SplashState::enter() {
+void LoseState::enter() {
     // Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("General");
-    OgreFramework::getSingletonPtr()->_log->logMessage("Entering SplashState...");
+    OgreFramework::getSingletonPtr()->_log->logMessage("Entering LoseState...");
 
     // SceneManager
-    _sceneManager = OgreFramework::getSingletonPtr()->_root->createSceneManager(Ogre::ST_GENERIC, "SplashSceneMgr");
+    _sceneManager = OgreFramework::getSingletonPtr()->_root->createSceneManager(Ogre::ST_GENERIC, "LoseSceneMgr");
     _sceneManager->setAmbientLight(Ogre::ColourValue(0.0f, 0.0f, 0.0f, 1.0f));
     _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
     _sceneManager->addRenderQueueListener(OgreFramework::getSingletonPtr()->_overlaySystem);
@@ -28,13 +19,13 @@ void SplashState::enter() {
     OgreFramework::getSingletonPtr()->_trayManager->destroyAllWidgets();
     OgreFramework::getSingletonPtr()->_trayManager->hideCursor();
     // OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    // OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "SplashState", 250);
+    // OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "LoseState", 250);
 
     // Scene
     createScene();
 }
 
-void SplashState::createScene() {
+void LoseState::createScene() {
     // Init Camera
     _camera = _sceneManager->createCamera("MainCamera");
     _camera->setAspectRatio(
@@ -44,54 +35,50 @@ void SplashState::createScene() {
 
     OgreFramework::getSingletonPtr()->_viewport->setCamera(_camera);
 
-    OgreBites::DecorWidget *_logo = OgreFramework::getSingletonPtr()->_trayManager->createDecorWidget(OgreBites::TL_NONE, "Splash/Logo", "OgreBM/Logo");
+    OgreBites::DecorWidget *_logo = OgreFramework::getSingletonPtr()->_trayManager->createDecorWidget(OgreBites::TL_NONE, "Lose/Logo", "OgreBMLose/LoseLogo");
     OgreFramework::getSingletonPtr()->_trayManager->moveWidgetToTray(_logo, OgreBites::TL_CENTER, 0);
     OgreFramework::getSingletonPtr()->_trayManager->getBackdropLayer()->hide();
 }
 
-void SplashState::exit() {
+void LoseState::exit() {
 
 }
 
-bool SplashState::keyPressed(const OIS::KeyEvent &evt) {
-    if (OgreFramework::getSingletonPtr()->_keyboard->isKeyDown(OIS::KC_ESCAPE)) {
-        _isQuit = true;
-        return true;
-    }
-
-    OgreFramework::getSingletonPtr()->keyPressed(evt);
+bool LoseState::keyPressed(const OIS::KeyEvent &evt) {
+  if (OgreFramework::getSingletonPtr()->_keyboard->isKeyDown(OIS::KC_ESCAPE)) {
+    _isQuit = true;
+    return true;
+  }
+  changeAppState(findByName("MenuState"));
+  OgreFramework::getSingletonPtr()->keyPressed(evt);
+  return true;
 }
 
-bool SplashState::keyReleased(const OIS::KeyEvent &evt) {
+bool LoseState::keyReleased(const OIS::KeyEvent &evt) {
     return false;
 }
 
-bool SplashState::mouseMoved(const OIS::MouseEvent &evt) {
+bool LoseState::mouseMoved(const OIS::MouseEvent &evt) {
     if (OgreFramework::getSingletonPtr()->_trayManager->injectMouseMove(evt))
         return true;
 }
 
-bool SplashState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
+bool LoseState::mousePressed(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
     return false;
 }
 
-bool SplashState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
+bool LoseState::mouseReleased(const OIS::MouseEvent &evt, OIS::MouseButtonID id) {
     return false;
 }
 
-void SplashState::buttonHit(OgreBites::Button *button) {
+void LoseState::buttonHit(OgreBites::Button *button) {
     // SdkTrayListener::buttonHit(button);
 }
 
-void SplashState::update(Ogre::Real timeSinceLastFrame) {
+void LoseState::update(Ogre::Real timeSinceLastFrame) {
     _FrameEvent.timeSinceLastFrame = timeSinceLastFrame;
     OgreFramework::getSingletonPtr()->_trayManager->frameRenderingQueued(
             _FrameEvent);
-
-    if (!_firstLoad) {
-        _firstLoad = true;
-        Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("General");
-    }
 
     _time += timeSinceLastFrame;
     if (_time > _awaitingTime) {

@@ -22,6 +22,7 @@ void GameState::enter() {
     _sceneManager = OgreFramework::getSingletonPtr()->_root->createSceneManager(Ogre::ST_GENERIC, "GameSceneMgr");
     _sceneManager->setAmbientLight(Ogre::ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
     // _sceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+    _sceneManager->setShadowColour(Ogre::ColourValue(0.95, 0.95, 0.95, 0.1));
     _sceneManager->addRenderQueueListener(OgreFramework::getSingletonPtr()->_overlaySystem);
 
     // Init Game Data
@@ -29,8 +30,8 @@ void GameState::enter() {
 
     // TrayManager
     OgreFramework::getSingletonPtr()->_trayManager->destroyAllWidgets();
-    OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "GameState", 250);
+    // OgreFramework::getSingletonPtr()->_trayManager->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    // OgreFramework::getSingletonPtr()->_trayManager->createLabel(OgreBites::TL_TOP, "MenuLbl", "GameState", 250);
 
 
     // Scene
@@ -41,11 +42,12 @@ void GameState::createScene() {
     // Map
     Map *map = _game->getMap();
 
-    _player = new Player(_sceneManager, "MyPlayer");
+    _player = new Player(_sceneManager, "MyPlayer", 0);
     InputManager::getSingletonPtr()->addKeyListener(_player, "MyPlayerKeyboard");
 
     _game->addPlayer(_player);
     _game->addIA("Bot1", "./ia/basic_ia.lua");
+    _game->addIA("Bot2", "./ia/basic_ia.lua");
     // _game->addIA("Bot2", "./ia/basic_ia.lua");
     // _game->addIA("Bot3", "./ia/basic_ia.lua");
 
@@ -112,6 +114,9 @@ void GameState::update(Ogre::Real timeSinceLastFrame) {
     OgreFramework::getSingletonPtr()->_trayManager->frameRenderingQueued(_FrameEvent);
 
     _game->update(timeSinceLastFrame);
+
+    if (!_player->isAlive())
+      changeAppState(findByName("LoseState"));
 
     if (_isQuit) {
         shutdown();

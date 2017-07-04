@@ -1,0 +1,8 @@
+template container Panel(OgreBMLose/LoseLogo)
+{
+	metrics_mode pixels
+	material OgreBMLose/LoseLogo
+	horz_align center
+	width 800
+	height 600
+}

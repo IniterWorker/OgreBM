@@ -9,11 +9,19 @@
 
 #include "Entities/Body.hpp"
 
-Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(name), _bombPower(1), _maxBombs(1),
-                                                                        _pos(Ogre::Vector2::ZERO),
-                                                                        _dir(Ogre::Vector2::ZERO),
-                                                                        _speed(100),
-                                                                        _wantBomb(false)
+const std::array<std::string, 4>      Body::_meshPlayers = {
+        "Sinbad_green.mesh",
+        "Sinbad_yellow.mesh",
+        "Sinbad_blue.mesh",
+        "Sinbad_red.mesh"
+};
+
+
+Body::Body(Ogre::SceneManager *sceneManager, const std::string &name, int id) : _name(name), _bombPower(1), _maxBombs(1), _alive(true),
+                                                                                _pos(Ogre::Vector2::ZERO),
+                                                                                _dir(Ogre::Vector2::ZERO),
+                                                                                _speed(100),
+                                                                                _wantBomb(false)
 {
     if (sceneManager == nullptr)
         throw std::runtime_error("Player Manager Error");
@@ -22,7 +30,7 @@ Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(na
     _nodeBody = _nodeRoot->createChildSceneNode(name + "_body");
     _nodeHead = _nodeRoot->createChildSceneNode(name + "_head");
 
-    _entityBody = sceneManager->createEntity("Sinbad_green.mesh");
+    _entityBody = sceneManager->createEntity(_meshPlayers[id]);
 
     _nodeBody->attachObject(_entityBody);
     _nodeBody->setScale(Ogre::Vector3(3, 4, 3));
@@ -62,7 +70,13 @@ void    Body::removeBomb(void)
 void  Body::receiveExplosion(void)
 {
   //player die or something like that ...
-  std::cerr << "AH !" << std::endl;
+  std::cerr << "AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !AH !" << std::endl;
+  _alive = false;
+}
+
+bool    Body::isAlive(void) const
+{
+  return (_alive);
 }
 
 const Ogre::Vector2 &Body::getPos() const {

@@ -197,6 +197,10 @@ set(CLIENT_SRCS
         src/States/MenuState.cpp
         src/States/AppStateManager.cpp
         src/States/AppState.cpp
+        include/States/OptState.hpp
+        src/States/OptState.cpp
+        include/States/LoseState.hpp
+        src/States/LoseState.cpp
         src/Application.cpp
         include/Application.hpp
         include/Game/Map.hpp

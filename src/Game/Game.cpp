@@ -36,7 +36,7 @@ void Game::update(Ogre::Real elapsedTime) {
     }
     _mvCooldown -= elapsedTime;
     for (auto it = _vPlayers.begin(); it != _vPlayers.end(); ++it) {
-        // (*it)->update(elapsedTime);
+        (*it)->update(elapsedTime);
         auto move = (*it)->getNodeRoot()->getPosition();
         const Ogre::Vector2 dir = (*it)->getDir();
         const Ogre::Real speed = (*it)->getSpeed();
@@ -115,7 +115,7 @@ void Game::addPlayer(Player *player) {
 }
 
 void Game::addIA(const std::string &name, const std::string &scriptPath) {
-    IA *bot = new IA(_sceneManager, name, scriptPath);
+  IA *bot = new IA(_sceneManager, name, scriptPath, _vPlayers.size());
     _vPlayers.push_back(static_cast<Body *>(bot));
     _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
     _vPlayers.back()->setPos(_map->getStartPos(_vPlayers.size() - 1));
