@@ -15,12 +15,14 @@
 #include <Entities/Body.hpp>
 #include <Entities/Player.hpp>
 #include "Map.hpp"
+# include "Entities/Bomb.hpp"
 
 class Game {
 protected:
     Ogre::SceneManager *_sceneManager;
     Ogre::RenderWindow *_renderWindow;
     std::vector<Body *> _vPlayers;
+    std::vector<Bomb *> _vBombs;
     Map *_map;
 public:
     Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager);

@@ -14,10 +14,18 @@
 #include <OGRE/OgreSceneManager.h>
 #include <OGRE/OgreEntity.h>
 #include <string>
+# include <vector>
+# include "Entities/Bomb.hpp"
+# include <OgreVector2.h>
 #include <Game/InputController.hpp>
+
+class Bomb;
 
 class Body : public InputController {
 protected:
+  int           _bombPower;
+  int           _maxBombs;
+  std::vector<Bomb*>    _bombs;
     std::string _name;
     Ogre::SceneNode *_nodeRoot;
     Ogre::SceneNode *_nodeHead;
@@ -32,6 +40,9 @@ public:
     virtual void update(Ogre::Real elapsedTime);
 
     Ogre::SceneNode *getNodeRoot();
+
+  Bomb  *putNewBomb(Ogre::SceneManager*, const Ogre::Vector2&, const Map&);
+  void  removeBomb(void);
 };
 
 

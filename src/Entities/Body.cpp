@@ -9,7 +9,8 @@
 
 #include "Entities/Body.hpp"
 
-Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(name) {
+Body::Body(Ogre::SceneManager *sceneManager, const std::string &name) : _name(name), _bombPower(1), _maxBombs(1)
+{
     if (sceneManager == nullptr)
         throw std::runtime_error("Player Manager Error");
 
@@ -32,4 +33,20 @@ void Body::update(Ogre::Real elapsedTime) {
 
 Ogre::SceneNode *Body::getNodeRoot() {
     return _nodeRoot;
+}
+
+Bomb*   Body::putNewBomb(Ogre::SceneManager* mgr, const Ogre::Vector2& pos, const Map& map)
+{
+  Bomb  *newBomb = nullptr;
+
+  if (_bombs.size() < _maxBombs) {
+    newBomb = new Bomb(mgr, pos, map, _bombPower, this);
+    _bombs.push_back(newBomb);
+  }
+  return (newBomb);
+}
+
+void    Body::removeBomb(void)
+{
+  _bombs.erase(_bombs.begin());
 }
