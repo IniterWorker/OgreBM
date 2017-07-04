@@ -45,6 +45,9 @@ void GameState::createScene() {
     InputManager::getSingletonPtr()->addKeyListener(_player, "MyPlayerKeyboard");
 
     _game->addPlayer(_player);
+    _game->addIA("Bot1", "./ia/basic_ia.lua");
+    // _game->addIA("Bot2", "./ia/basic_ia.lua");
+    // _game->addIA("Bot3", "./ia/basic_ia.lua");
 
     // SkyBox
     _sceneManager->setSkyBox(true, "Examples/SpaceSkyBox", 300);

@@ -7,6 +7,7 @@
 //-----------------------------------------------------------------------------
 //
 
+#include <Entities/IA.hpp>
 #include "Game/Game.hpp"
 
 Game::Game(Ogre::RenderWindow *renderWindow, Ogre::SceneManager *sceneManager) :
@@ -98,6 +99,13 @@ std::vector<Body *> &Game::getPlayers() {
 
 void Game::addPlayer(Player *player) {
     _vPlayers.push_back(static_cast<Body *>(player));
+    _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
+    _vPlayers.back()->getPos() = _map->getStartPos(_vPlayers.size() - 1);
+}
+
+void Game::addIA(const std::string &name, const std::string &scriptPath) {
+    IA *bot = new IA(_sceneManager, name, scriptPath);
+    _vPlayers.push_back(static_cast<Body *>(bot));
     _vPlayers.back()->getNodeRoot()->setPosition(_map->getStartEmplacement(_vPlayers.size() - 1));
     _vPlayers.back()->getPos() = _map->getStartPos(_vPlayers.size() - 1);
 }

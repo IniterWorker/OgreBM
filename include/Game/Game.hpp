@@ -36,6 +36,8 @@ public:
 
     void addPlayer(Player *player);
 
+    void addIA(const std::string &name, const std::string &scriptPath);
+
     std::vector<Body *> &getPlayers();
 };
 

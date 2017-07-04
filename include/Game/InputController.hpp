@@ -32,7 +32,7 @@ public:
 
     virtual ~InputController();
 
-    bool getLastAction(ActionPlayer &action);
+    virtual bool getLastAction(ActionPlayer &action);
 
 protected:
     void moveUp();

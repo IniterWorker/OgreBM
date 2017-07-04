@@ -16,11 +16,15 @@
 
 class Player : public Body, public OIS::KeyListener {
 public:
+
     Player(Ogre::SceneManager *sceneManager, const std::string &name);
 
     bool keyPressed(const OIS::KeyEvent &arg) override;
 
     bool keyReleased(const OIS::KeyEvent &arg) override;
+
+private:
+    ActionPlayer _lastKey;
 };
 
 #endif //OGREBM_PLAYER_HPP
